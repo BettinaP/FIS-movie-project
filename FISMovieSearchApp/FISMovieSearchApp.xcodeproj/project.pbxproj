@@ -7,8 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DE628F411D89DC3200710507 /* MoviesSearchHomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE628F401D89DC3200710507 /* MoviesSearchHomeViewController.swift */; };
+		DE628F431D89DF5300710507 /* FavoritesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE628F421D89DF5300710507 /* FavoritesTableViewController.swift */; };
+		DE628F451D89E09B00710507 /* MovieInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE628F441D89E09B00710507 /* MovieInfoViewController.swift */; };
 		DEF1873A1D87863900568076 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEF187391D87863900568076 /* AppDelegate.swift */; };
-		DEF1873C1D87863900568076 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEF1873B1D87863900568076 /* ViewController.swift */; };
 		DEF1873F1D87863900568076 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DEF1873D1D87863900568076 /* Main.storyboard */; };
 		DEF187411D87863900568076 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DEF187401D87863900568076 /* Assets.xcassets */; };
 		DEF187441D87863900568076 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DEF187421D87863900568076 /* LaunchScreen.storyboard */; };
@@ -18,9 +20,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		DE628F401D89DC3200710507 /* MoviesSearchHomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoviesSearchHomeViewController.swift; sourceTree = "<group>"; };
+		DE628F421D89DF5300710507 /* FavoritesTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FavoritesTableViewController.swift; sourceTree = "<group>"; };
+		DE628F441D89E09B00710507 /* MovieInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MovieInfoViewController.swift; sourceTree = "<group>"; };
 		DEF187361D87863900568076 /* FISMovieSearchApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FISMovieSearchApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DEF187391D87863900568076 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		DEF1873B1D87863900568076 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		DEF1873E1D87863900568076 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		DEF187401D87863900568076 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DEF187431D87863900568076 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -64,8 +68,10 @@
 				DEF1874F1D889E9800568076 /* MovieDataStore.swift */,
 				DEF1874D1D884B8100568076 /* Movie.swift */,
 				DEF187391D87863900568076 /* AppDelegate.swift */,
-				DEF1873B1D87863900568076 /* ViewController.swift */,
+				DE628F421D89DF5300710507 /* FavoritesTableViewController.swift */,
+				DE628F401D89DC3200710507 /* MoviesSearchHomeViewController.swift */,
 				DEF1873D1D87863900568076 /* Main.storyboard */,
+				DE628F441D89E09B00710507 /* MovieInfoViewController.swift */,
 				DEF187401D87863900568076 /* Assets.xcassets */,
 				DEF187421D87863900568076 /* LaunchScreen.storyboard */,
 				DEF187451D87863900568076 /* Info.plist */,
@@ -144,11 +150,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DEF1873C1D87863900568076 /* ViewController.swift in Sources */,
+				DE628F451D89E09B00710507 /* MovieInfoViewController.swift in Sources */,
 				DEF1873A1D87863900568076 /* AppDelegate.swift in Sources */,
 				DEF187501D889E9800568076 /* MovieDataStore.swift in Sources */,
 				DEF1874E1D884B8100568076 /* Movie.swift in Sources */,
+				DE628F431D89DF5300710507 /* FavoritesTableViewController.swift in Sources */,
 				DEF1874C1D87890500568076 /* OMDBAPIClient.swift in Sources */,
+				DE628F411D89DC3200710507 /* MoviesSearchHomeViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -300,6 +308,7 @@
 				DEF1874A1D87863900568076 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
