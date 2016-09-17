@@ -22,7 +22,6 @@ class Movie {
     var imdbID: String
     var type: String
     var moviePosterImage: String
-    
     // Created in full dictionary
     
     var rated: String = ""
@@ -43,7 +42,7 @@ class Movie {
     //    var fullPlotDescription: String
     //write convenience initializer that only takes what it needs
     
-    init(fullDictionary: NSDictionary) {
+    init?(fullDictionary: [String : AnyObject]) { //init? makes initializer failable so if not successfully created, then return nil and movie won't be included in search results
         
         guard let
             movieTitle = fullDictionary["Title"] as? String,
@@ -64,32 +63,33 @@ class Movie {
             movieIMDBRating = fullDictionary["imdbRating"]as? String,
             movieMetascore = fullDictionary["Metascore"] as? String,
             isThereResponse = fullDictionary["Response"] as? String
-            
-            else {fatalError("Error creating instance of Movie")}
         
-        title = movieTitle
+            else {return nil}
+            //else {fatalError("Error creating instance of Movie")}
+        
+        self.title = movieTitle
         self.year = year
-        imdbID = movieIMDBid
-        type = validType
-        moviePosterImage = moviePoster
-        rated = movieRated
+        self.imdbID = movieIMDBid
+        self.type = validType
+        self.moviePosterImage = moviePoster
+        self.rated = movieRated
         self.released = released
-        runTime = movieRuntime
-        genre = movieGenre
-        director = movieDirector
-        writer = movieWriter
-        actors = movieActors
-        plot = moviePlot
-        language  = movieLanguage
-        awards = movieAwards
-        imdbRating = movieIMDBRating
-        metaScore = movieMetascore
-        response = isThereResponse
+        self.runTime = movieRuntime
+        self.genre = movieGenre
+        self.director = movieDirector
+        self.writer = movieWriter
+        self.actors = movieActors
+        self.plot = moviePlot
+        self.language  = movieLanguage
+        self.awards = movieAwards
+        self.imdbRating = movieIMDBRating
+        self.metaScore = movieMetascore
+        self.response = isThereResponse
         
     }
     
     
-    init(basicDictionary: NSDictionary) {
+    init?(basicDictionary: NSDictionary) {
         //        (title: movieTitle, year: year, imdbID: movieIMDBid, type: validType, moviePosterImage: moviePoster)
         guard let
             movieTitle = basicDictionary["Title"] as? String,
@@ -97,13 +97,15 @@ class Movie {
             year = basicDictionary["Year"] as? String,
             validType = basicDictionary["Type"] as? String,
             moviePoster = basicDictionary["Poster"] as? String
-            
-            else {fatalError("Error creating convenience instance of Movie")}
+        
+            else {return nil}
+           // else {fatalError("Error creating convenience instance of Movie")}
         
         self.title = movieTitle
         self.year = year
         self.imdbID = movieIMDBid
         self.type = validType
+        
         self.moviePosterImage = moviePoster
     }
     
@@ -123,7 +125,13 @@ class Movie {
     
     
     func updateMovieWithFullPlot(completion: () -> Void) {
-    
+        
+        OMDBAPIClient.getFullPlotDescriptionFromSearch(imdbID) { (dictionary) in
+            
+            self.updateMovieWithMoreDetails(dictionary)
+            
+            completion()
+        }
     
     }
     

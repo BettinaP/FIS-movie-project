@@ -10,29 +10,33 @@ import Foundation
 
 class OMDBAPIClient {
     
+    //by title
     
-    class func getMovieBasicSearchResults(searchTitle: String, searchPage: Int, completion:[[String: AnyObject]] -> ()) {
-        
-        //by title
-        
-        // http://www.omdbapi.com/?t=Batman&y=&plot=short&r=json
-        // http://www.omdbapi.com/?t=batman&y=&plot=full&r=json
-        
-        // Search pagination added: http://www.omdbapi.com/?s=Batman&page=2
-        // You can now return all episodes by using just the "Season" parameter: http://www.omdbapi.com/?t=Game of Thrones&Season=1
-        //Response = True;
-        /*Search =     (
-         {
-         Poster = "http://ia.media-imdb.com/images/M/MV5BNTM3OTc0MzM2OV5BMl5BanBnXkFtZTYwNzUwMTI3._V1_SX300.jpg";
-         Title = "Batman Begins";
-         Type = movie;
-         Year = 2005;
-         imdbID = tt0372784;
-         }
-         */
-        
-        //by id http://www.omdbapi.com/?i=tt0097757&plot=short&r=json
-        
+    // http://www.omdbapi.com/?t=Batman&y=&plot=short&r=json
+    // http://www.omdbapi.com/?t=batman&y=&plot=full&r=json
+    
+    // Search pagination added: http://www.omdbapi.com/?s=Batman&page=2
+    // You can now return all episodes by using just the "Season" parameter: http://www.omdbapi.com/?t=Game of Thrones&Season=1
+    //Response = True;
+    /*Search =     (
+     {
+     Poster = "http://ia.media-imdb.com/images/M/MV5BNTM3OTc0MzM2OV5BMl5BanBnXkFtZTYwNzUwMTI3._V1_SX300.jpg";
+     Title = "Batman Begins";
+     Type = movie;
+     Year = 2005;
+     imdbID = tt0372784;
+     }
+     */
+    
+    //by id http://www.omdbapi.com/?i=tt0097757&plot=short&r=json
+    
+    
+    class func getMovieBasicSearchResults(searchTitle: String, completion:[[String: AnyObject]] -> ()) {
+    
+        // make network call, get back some data and pass it back to data store ( not parsing through dictioanry of data in this method. Just getting it and passing it to datastore)
+//    class func getMovieBasicSearchResults(searchTitle: String, searchPage: Int, completion:[[String: AnyObject]] -> ()) {
+    
+        let searchPage = 1
         let urlString = "https://www.omdbapi.com/?s=\(searchTitle)&page=\(searchPage)"
         print(urlString)
         let searchURL = NSURL(string: urlString)
@@ -46,16 +50,6 @@ class OMDBAPIClient {
         
         searchSession.dataTaskWithURL(unwrappedSearchURL) { (data, response, error) in
             
-            
-      
-            
-            //        let searchRequest = NSMutableURLRequest(URL: unwrappedSearchURL)
-            //        searchRequest.HTTPMethod = "GET"
-            //        searchSession.dataTaskWithRequest(searchRequest) { (data, response, error) in
-            //            print(data)
-            //            print(response)
-            //            print(error)
-            //
             guard let searchData = data else {fatalError("Unable to get data \(error?.localizedDescription)")}
             
             do {
@@ -69,19 +63,6 @@ class OMDBAPIClient {
                 
                 completion(basicSearchArray)
                 
-                
-                //                print("Im printing basic search \(basicSearch)")
-                //
-                //                let basicPoster = basicSearch["Poster"] as! String
-                //                print("Im printing basic poster URL \(basicPoster)")
-                //                let basicTitle = basiBSearch["Title"] as! String
-                //                print("Im printing basic title \(basicTitle)")
-                //                let basicYear = unwrappedBasicSearchDictionary["Year"] as! String
-                //                print("Im printing basic year\(basicYear)")
-                
-                //                print(unwrappedBasicSearchDictionary)
-                //                completion(unwrappedBasicSearchDictionary)
-                
             } catch {
                 
                 print("this is the first \(error)")
@@ -91,6 +72,8 @@ class OMDBAPIClient {
             }.resume()
         
     }
+    
+    
     
     
     //by id http://www.omdbapi.com/?i=tt0097757&plot=short&r=json
@@ -127,8 +110,9 @@ class OMDBAPIClient {
     }
     
     
+    
+    
     class func getFullPlotDescriptionFromSearch(movieID:String, completion:(NSDictionary) ->()) {
-        
         
         let fullURLString = "https://www.omdbapi.com/?i=\(movieID)&plot=full&r=json"
         let fullURL = NSURL(string: fullURLString)
@@ -141,11 +125,11 @@ class OMDBAPIClient {
             
             do {
                 let fullPlotDictionary = try NSJSONSerialization.JSONObjectWithData(fullPlotData, options: []) as! NSDictionary
-                let movie = Movie(dictionary: fullPlotDictionary)
-                movie.plot = fullPlotDictionary["Plot"] as! String
-                print("I'm printing the full plot: \(movie.plot)")
-                
-                print("I'm printing the full dictionary: \(fullPlotDictionary)")
+//                let movie = Movie(dictionary: fullPlotDictionary)
+//                movie.plot = fullPlotDictionary["Plot"] as! String
+//                print("I'm printing the full plot: \(movie.plot)")
+//                
+//                print("I'm printing the full dictionary: \(fullPlotDictionary)")
                 completion(fullPlotDictionary)
                 
             } catch {
