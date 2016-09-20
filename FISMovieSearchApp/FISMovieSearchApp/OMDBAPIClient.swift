@@ -31,13 +31,18 @@ class OMDBAPIClient {
     //by id http://www.omdbapi.com/?i=tt0097757&plot=short&r=json
     
     
-    class func getMovieBasicSearchResults(searchTitle: String, completion:[[String: AnyObject]] -> ()) {
+    class func getMovieBasicSearchResults(searchTerm: String, completion:[String : AnyObject] -> ()) {
     
-        // make network call, get back some data and pass it back to data store ( not parsing through dictioanry of data in this method. Just getting it and passing it to datastore)
-//    class func getMovieBasicSearchResults(searchTitle: String, searchPage: Int, completion:[[String: AnyObject]] -> ()) {
-    
+        // make network call, get back some data and pass it back to data store ( not parsing through dictionary of data in this method. Just getting it and passing it to datastore)
+        //    class func getMovieBasicSearchResults(searchTitle: String, searchPage: Int, completion:[[String: AnyObject]] -> ()) {
+        
+        // if searchBar.text = "", then arcRandom from defaultSearchTerm array, else take in searchBar.text as argument
+        
+        // also replace spaces in searchterm with plus
+        
+        let spacelessSearchTerm = searchTerm.stringByReplacingOccurrencesOfString(" ", withString: "+")
         let searchPage = 1
-        let urlString = "https://www.omdbapi.com/?s=\(searchTitle)&page=\(searchPage)"
+        let urlString = "https://www.omdbapi.com/?s=\(spacelessSearchTerm)&page=\(searchPage)"
         print(urlString)
         let searchURL = NSURL(string: urlString)
         print(searchURL)
@@ -53,15 +58,17 @@ class OMDBAPIClient {
             guard let searchData = data else {fatalError("Unable to get data \(error?.localizedDescription)")}
             
             do {
-                let basicSearchDictionary = try NSJSONSerialization.JSONObjectWithData(searchData, options: []) as! [String:AnyObject] //array of dictionaries
+                let basicSearchDictionary = try NSJSONSerialization.JSONObjectWithData(searchData, options: []) as! [String : AnyObject] //array of dictionaries
                 print(basicSearchDictionary)
                 //  print("Im printing basic search array \(basicSearchArray)")
-                //guard let unwrappedBasicSearchDictionary = basicSearchDictionary else {return}
+                guard let unwrappedBasicSearchDictionary = basicSearchDictionary as? [String : AnyObject] else {return}
                 //print("This is wrong \(unwrappedBasicSearchDictionary)")
-                guard let basicSearchArray = basicSearchDictionary["Search"] as? [[String:AnyObject]] else {return}
-                                print(basicSearchArray)
+//                guard let basicSearchArray = basicSearchDictionary["Search"] as? [[String:AnyObject]] else {return}
+//                                print(basicSearchArray)
+//   
+                completion(unwrappedBasicSearchDictionary)
                 
-                completion(basicSearchArray)
+                //pass back whole dictionary so can also access "total results" key, not just "search" so can do pagination 
                 
             } catch {
                 
@@ -82,7 +89,12 @@ class OMDBAPIClient {
     
     //   let descriptionURLString = "https://www.omdbapi.com/?i=\(movieID)&plot=\(plotType)&r=json"
     
-    class func getShortPlotDescriptionFromSearch(movieID:String, completion:(NSDictionary) ->()) {
+//    class func getShortPlotDescriptionFromSearch(movie: Movie, completion:(NSDictionary) ->()) {
+    
+        class func getShortPlotDescriptionFromSearch(movieID: String, completion:(NSDictionary) ->()) {
+        //WON'T LET ME PASS IN MOVIE.MOVIEID INSTEAD STRING for movieID
+        
+//        let movieID = movie.imdbID
         let shortURLString = "https://www.omdbapi.com/?i=\(movieID)&plot=short&r=json"
         let shortURL = NSURL(string: shortURLString)
         guard let unwrappedShortURL = shortURL else {fatalError("Invalid URL")}
@@ -112,8 +124,12 @@ class OMDBAPIClient {
     
     
     
-    class func getFullPlotDescriptionFromSearch(movieID:String, completion:(NSDictionary) ->()) {
-        
+    class func getFullPlotDescriptionFromSearch(movieID: String, completion:(NSDictionary) ->()) {
+    
+//    class func getFullPlotDescriptionFromSearch(movie:Movie, completion:(NSDictionary) ->()) {
+//        
+//        let movieID = movie.imdbID
+    
         let fullURLString = "https://www.omdbapi.com/?i=\(movieID)&plot=full&r=json"
         let fullURL = NSURL(string: fullURLString)
         guard let unwrappedfullURL = fullURL else {fatalError("Invalid full plot URL")}

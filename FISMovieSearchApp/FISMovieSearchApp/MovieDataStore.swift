@@ -15,80 +15,115 @@ class MovieDataStore {
     private init() {} //make sure people aren't trying to create multiple instances of the singleton (esp since purpose of singleton is to initalized one time only and be passed around)
     
     var movieResults: [Movie] = []
-//    var searchedTitle = String()
-   // var searchedID = String()
+    var totalSearchResults : Int = 0
+    //    var searchedTitle = String()
+    // var searchedID = String()
     var plotSummary = String()
-   // var resultPage: Int = 1
+    // var resultPage: Int = 1
     
-    func getMovieBasicSearchResultsWithCompletion(searchedTitle: String, completion: (Bool) ->()) {
+    func getMovieBasicSearchResultsWithCompletion(searchedTerm: String, completion: (Bool) ->()) {
         
-        print(searchedTitle)
+        print(searchedTerm)
         
-    //    OMDBAPIClient.getMovieBasicSearchResults(searchedTitle, searchPage: resultPage) { (resultsArray) in
+        //    OMDBAPIClient.getMovieBasicSearchResults(searchedTitle, searchPage: resultPage) { (resultsArray) in
         
         /* to do:
-        1) get array of results form json,
-        2) loop over array to create movie objects,
-        3) add movie objects to datastore array
-        4) use completion handler to inform collection view that array of movies is ready
-        */
-        OMDBAPIClient.getMovieBasicSearchResults(searchedTitle) { (resultsArray) in
+         1) get array of results form json,
+         2) loop over array to create movie objects,
+         3) add movie objects to datastore array
+         4) use completion handler to inform collection view that array of movies is ready
+         */
+        OMDBAPIClient.getMovieBasicSearchResults(searchedTerm) { (resultsDictionary) in
             
-            self.movieResults.removeAll()
+            //            for key in resultsDictionary.keys {
+            //
+            //                if key == "totalResults"{
             
-            for dictionary in resultsArray {
+            self.totalSearchResults = (resultsDictionary["totalResults"]?.integerValue)!
+            
+            if self.movieResults.count <= self.totalSearchResults {
                 
-               let result = dictionary
-//                as? NSDictionary else {fatalError("Object in resultsArray is of non-dictionary type")}
+                guard let resultsArray = resultsDictionary["Search"] as? [[String: AnyObject]] else {return}
                 
-                if let movie = Movie(basicDictionary: result) { //that way if movie returns as nil from search, won't be added to movies array
-                
-                print("I am equal to results poster \(movie.moviePosterImage)")
-                
-                self.movieResults.append(movie)
+                for dictionary in resultsArray {
+                    
+                    let result = dictionary
+                    //                as? NSDictionary else {fatalError("Object in resultsArray is of non-dictionary type")}
+                    
+                    if let movie = Movie(basicDictionary: result) { //that way if movie returns as nil from search, won't be added to movies array
+                        
+                        print("I am equal to results poster \(movie.moviePosterURL)")
+                        
+                        self.movieResults.append(movie)
+                    }
                 }
+                
+                
+            } else if self.movieResults.count > self.totalSearchResults {
+                
+                self.movieResults.removeAll()
             }
-            completion(true)
-        }
-    }
-    
-    
-    //use existing movieObject.ID as parameter instead of passing a string
-//    so when you're saving in coredata, you're moving movie & its properties (title & year) 
-    
-    func getShortPlotDescriptionFromSearchWithCompletion(movie: Movie, completion: (Bool)-> ()) {
-    
-    
-        OMDBAPIClient.getShortPlotDescriptionFromSearch(movie.imdbID) { (shortPlotResult) in
-           // TO DO: additional details to dipsplau
-//            let shortPlotMovie = Movie(fullDictionary: shortPlotResult)
-//            shortPlotMovie.plot = shortPlotResult["Plot"] as! String
-//            print("i am equal to the short plot : \(shortPlotMovie.plot)")
-            //i don't really know what i'm trying to get here to be honest
             
-            //if movieID is true/right ID, update my labels or pass the plot info
-           completion(true)
-        }
-       //pagination, compare movie array count to total resuls count, if not don't make that api call, check response
-    
+            
+        
+        //            if moviesResults.count == pagination array count"totalResults"
+        //        self.movieResults.removeAll() // figure out some logic because only want to removeAll when it's a brand new search, may want to append some information to array ( ie. movies on next page until get all results added to results array) also will be accessing "search" and for pagination "totalResults", comparing results count to...
+        
+        
+        
+        //            for dictionary in resultsArray {
+        //
+        //               let result = dictionary
+        ////                as? NSDictionary else {fatalError("Object in resultsArray is of non-dictionary type")}
+        //
+        //                if let movie = Movie(basicDictionary: result) { //that way if movie returns as nil from search, won't be added to movies array
+        //
+        //                print("I am equal to results poster \(movie.moviePosterURL)")
+        //
+        //                self.movieResults.append(movie)
+        //                }
+        //            }
+        completion(true)
     }
+}
+
+
+//use existing movieObject.ID as parameter instead of passing a string
+//    so when you're saving in coredata, you're moving movie & its properties (title & year)
+
+func getShortPlotDescriptionFromSearchWithCompletion(movie: Movie, completion: (Bool)-> ()) {
     
     
+    OMDBAPIClient.getShortPlotDescriptionFromSearch(movie.imdbID) { (shortPlotResult) in
+        // TO DO: additional details to dipsplau
+        //            let shortPlotMovie = Movie(fullDictionary: shortPlotResult)
+        //            shortPlotMovie.plot = shortPlotResult["Plot"] as! String
+        //            print("i am equal to the short plot : \(shortPlotMovie.plot)")
+        //i don't really know what i'm trying to get here to be honest
+        
+        //if movieID is true/right ID, update my labels or pass the plot info
+        completion(true)
+    }
+    //pagination, compare movie array count to total resuls count, if not don't make that api call, check response
     
-    
+}
+
+
+
+
 //        func getFullPlotDescriptionFromSearch(searchedID, completion: () -> ()) {
-//            
+//
 //            OMDBAPIClient.getPlotDescriptionFromSearch(searchedID, plotType: plotSummary) { (resultDictionary) in
 //                for key in resultDictionary.allKeys {
 //                    //i don't really know what i'm trying to get here to be honest
 //                }
 //            }
-//            
-//            
-//            
+//
+//
+//
 //        }
-        
-    
+
+
 }
 
 //
