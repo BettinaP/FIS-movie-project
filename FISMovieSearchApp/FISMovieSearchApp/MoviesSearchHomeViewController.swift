@@ -14,78 +14,68 @@ class MoviesSearchHomeViewController: UIViewController, UICollectionViewDelegate
     
     
     let store = MovieDataStore.sharedInstance
-    let pageNumber = Int()
+    var pageNumber = 1
     var moviesCollectionView: UICollectionView!
-    var defaultSearchTerms = ["love","who", "adventure", "night", "day", "space", "girl", "man", "funny"]
+    var defaultSearchTerms = ["love", "adventure","who", "night", "day", "space", "girl", "man", "funny"]
+    var term = String()
+    let searchBar = UISearchBar()
     
     override func viewDidLoad() {
-        super.viewDidLoad() //nothing ahs appeared yet, not until viewWillAppear. vieewDidLoad only loads once
+        super.viewDidLoad()
+        if searchBar.text == "" || searchBar.text == " " {
+            
+            let index = Int(arc4random_uniform(9))
+            term = defaultSearchTerms[index]
         
-        // TO DO: add search bar to nav bar
+            store.getSearchResultsByPageWithCompletion(term, searchPage: pageNumber, completion: { success in
+                NSOperationQueue.mainQueue().addOperationWithBlock({ 
+                    self.moviesCollectionView.reloadData()
+                })
+            })
+            
+            
+            
+            
+//            store.getBasicSearchResultsWithCompletion(term) { success in
+//                print("inside api call in ViewDidLoad, term passed: \(self.term)")
+//                NSOperationQueue.mainQueue().addOperationWithBlock({
+//                    self.moviesCollectionView.reloadData()
+//                    print("yo \(self.store.movieResults)")
+//                })
+//                
+//            }
+            
+        }
         
-        //searchBar.frame = CGRect(x: 0.0, y: 0.0, width: self.view.frame.width, height: 30.0)
+        setupCollectionView()
         
-        let searchBar = UISearchBar()
+    }
+    
+    
+    
+    func setupCollectionView(){
+        
         searchBar.sizeToFit()
         searchBar.delegate = self
         searchBar.placeholder = "Search for movie"
         self.navigationItem.titleView = searchBar
         searchBar.setShowsCancelButton(true, animated: false)
-      
- 
-        
-        
-        //self.navigationItem.titleView = self.searchDisplayController?.searchBar
-       // self.searchDisplayController?.displaysSearchBarInNavigationBar = true
-     
-        //URLS cannot take spaces you must use a + instead so you have to add some kind of check to ensure that searchedTitle (which comes from the search bar) deals with the space
-        //        store.searchedTitle = "Game+of+Thrones"
-        // if searchBar.text = "", then arcRandom from defaultSearchTerm array, else take in searchBar.text as argument
-        
-        // also replace spaces in searchterm with plus
-        store.getMovieBasicSearchResultsWithCompletion("The Hangover") { success in
-            
-           
-            
-            
-            // TO DO: USE DATASTORE ARRAY TO POPULATE COLLECTION VIEW
-            NSOperationQueue.mainQueue().addOperationWithBlock({
-                self.moviesCollectionView.reloadData()
-            })
-            //        print((storeDictionaryArray))
-            
-        }
-        
-        
-        
-        
-        
-        //        OMDBAPIClient.getMovieBasicSearchResults("Batman", searchPage: 2) { dictionary in
-        //            //print(dictionary)
-        //
-        //
-        //        }
-        //
-        //        OMDBAPIClient.getShortPlotDescriptionFromSearch("tt0097757") { (dictionary) in
-        //            print("I'm the short description \(dictionary)")
-        //        }
-        //
-        //        OMDBAPIClient.getFullPlotDescriptionFromSearch("tt1119646") { (dictionary) in
-        //            print("i'm the long description \(dictionary)")
-        //        }
-        // Do any additional setup after loading the view, typically from a nib.
-        
         
         
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
-        
+        layout.sectionInset = UIEdgeInsets(top: 10.0, left: 10.0, bottom: 10.0, right: 10.0)
+        layout.minimumLineSpacing = 20
+        layout.minimumInteritemSpacing = 15
+        layout.scrollDirection = UICollectionViewScrollDirection.Vertical
+       
+    
         moviesCollectionView = UICollectionView(frame: self.view.frame, collectionViewLayout: layout)
         moviesCollectionView.dataSource = self
         moviesCollectionView.delegate = self
-        moviesCollectionView.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier: "movieCollectionCell")
-        
-        moviesCollectionView.backgroundColor = UIColor.purpleColor()
+        moviesCollectionView.registerClass(CustomMovieSearchCell.self, forCellWithReuseIdentifier: NSStringFromClass(CustomMovieSearchCell))
+        moviesCollectionView.backgroundColor = UIColor(white: 0.2, alpha: 0.2)
         self.view.addSubview(moviesCollectionView)
+        
         
         self.moviesCollectionView.translatesAutoresizingMaskIntoConstraints = false
         self.moviesCollectionView.centerXAnchor.constraintEqualToAnchor(self.view.centerXAnchor).active = true
@@ -93,111 +83,101 @@ class MoviesSearchHomeViewController: UIViewController, UICollectionViewDelegate
         self.moviesCollectionView.widthAnchor.constraintEqualToAnchor(self.view.widthAnchor).active = true
         self.moviesCollectionView.heightAnchor.constraintEqualToAnchor(self.view.heightAnchor, multiplier: 0.95).active = true
         
+        
         self.moviesCollectionView.allowsSelection = true
         self.moviesCollectionView.pagingEnabled = true
-        
+    }
+    
+    
+    // Do any additional setup after loading the view, typically from a nib.
+    
+    
+    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
+        term = searchBar.text!
+        print(term)
+        let queue = NSOperationQueue()
+    
+        queue.addOperationWithBlock {
+            self.store.getSearchResultsByPageWithCompletion(self.term, searchPage: self.pageNumber) { success in
+                
+                
+                // TO DO: USE DATASTORE ARRAY TO POPULATE COLLECTION VIEW
+                print(success)
+                NSOperationQueue.mainQueue().addOperationWithBlock({
+                    self.moviesCollectionView.reloadData()
+                    print(self.store.movieResults)
+                })
+            }
+        }
         
     }
     
-    func searchBarCancelButtonClicked(searchBar: UISearchBar) {
-         self.searchBarCancelButtonClicked(searchBar)  //Tells the delegate that the cancel button was tapped, typically to dismiss search bar.  
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(true)
+        //        searchBarSearchButtonClicked(self.searchBar)
+        self.moviesCollectionView.reloadData()
+    
     }
+    
+    
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
     
+    
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        
         return self.store.movieResults.count
     }
     
+    
+    
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         
-        let movieCell = collectionView.dequeueReusableCellWithReuseIdentifier("movieCollectionCell", forIndexPath: indexPath)
-        
-        let titleLabel = UILabel()
-        let yearLabel = UILabel()
-        let posterView = UIImageView()
-        
-        posterView.contentMode = .ScaleAspectFit
-        posterView.clipsToBounds = true
-        posterView.tintColor = UIColor.yellowColor()
-        
-        titleLabel.textAlignment = NSTextAlignment.Center
-        titleLabel.lineBreakMode = NSLineBreakMode.ByWordWrapping
-        titleLabel.textColor = UIColor.redColor()
-        titleLabel.font = UIFont(name: "Arial", size: 16.0)
-        titleLabel.adjustsFontSizeToFitWidth = true
-        titleLabel.sizeToFit()
-        
-        yearLabel.textAlignment = NSTextAlignment.Center
-        yearLabel.textColor = UIColor.redColor()
-        yearLabel.font = UIFont(name: "Arial", size: 12.0)
-        yearLabel.adjustsFontSizeToFitWidth = true
-        yearLabel.sizeToFit()
-        
-        movieCell.addSubview(posterView)
-        movieCell.addSubview(titleLabel)
-        movieCell.addSubview(yearLabel)
-        
-        posterView.translatesAutoresizingMaskIntoConstraints = false
-        posterView.widthAnchor.constraintEqualToAnchor(movieCell.widthAnchor).active = true
-        posterView.heightAnchor.constraintEqualToAnchor(movieCell.heightAnchor, multiplier: 0.75).active = true
-        posterView.topAnchor.constraintEqualToAnchor(movieCell.topAnchor).active = true
-        posterView.leadingAnchor.constraintEqualToAnchor(movieCell.leadingAnchor).active = true
-        
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.centerXAnchor.constraintEqualToAnchor(movieCell.centerXAnchor).active = true
-        titleLabel.topAnchor.constraintEqualToAnchor(posterView.bottomAnchor).active = true
-        titleLabel.widthAnchor.constraintEqualToAnchor(movieCell.widthAnchor).active = true
-        
-        yearLabel.translatesAutoresizingMaskIntoConstraints = false
-        yearLabel.centerXAnchor.constraintEqualToAnchor(movieCell.centerXAnchor).active = true
-        yearLabel.topAnchor.constraintEqualToAnchor(titleLabel.bottomAnchor).active = true
-        yearLabel.widthAnchor.constraintEqualToAnchor(movieCell.widthAnchor).active = true
-        
+        let movieCell = collectionView.dequeueReusableCellWithReuseIdentifier(NSStringFromClass(CustomMovieSearchCell), forIndexPath: indexPath) as! CustomMovieSearchCell
         
         let movieSelected = self.store.movieResults[indexPath.row]
         
+        movieCell.configureMovieCell(movieSelected)
         
-        if movieSelected.moviePosterURL != "N/A" {
-            
-            
-            let posterURL = NSURL(string: movieSelected.moviePosterURL)
-            guard let unwrappedPosterURL = posterURL else {fatalError("could not get image url")}
-            
-            print("\n\n\n\n our print\(unwrappedPosterURL)")
-            
-            guard let posterData = NSData(contentsOfURL: unwrappedPosterURL) else {assertionFailure("could not get image data"); return movieCell}
-            posterView.image = UIImage(data: posterData)
-            
-        } else {
-            posterView.image = UIImage(named: "no movie-icon-14032.png")
-            //movieCell.backgroundColor = UIColor.greenColor()
-            
-        }
-        //            UIImage(imageWithData: NSData(imageURL))
-        titleLabel.text = movieSelected.title
-        
-        yearLabel.text = movieSelected.year
-        
-        print("movie cell \(indexPath.row) is getting created")
-//        movieCell.backgroundColor = UIColor.blueColor()
         
         return movieCell
     }
     
     
+    
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+        return CGSizeMake(view.frame.width/3.5, view.frame.height/3.0)
+    }
+
+    
+    
+    func collectionView(collectionView: UICollectionView, willDisplayCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
         
-        return CGSizeMake(view.frame.width/3.5, view.frame.height/3.5)
+        if indexPath.item == self.store.movieResults.count - 2 {
+        pageNumber += 1
+        
+            store.getSearchResultsByPageWithCompletion(term, searchPage: pageNumber, completion: { success in
+            NSOperationQueue.mainQueue().addOperationWithBlock({ 
+                
+                self.moviesCollectionView.reloadData()
+            })
+        })
+        print("load more")
+        
+        }
+        
     }
     
-    //    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-    //        <#code#>
+    //    func searchBarCancelButtonClicked(searchBar: UISearchBar) {
+    //           //Tells the delegate that the cancel button was tapped, typically to dismiss search bar.
     //    }
+    
+    
+    
     //    /*
     // MARK: - Navigation
     

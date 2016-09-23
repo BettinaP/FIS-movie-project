@@ -12,128 +12,95 @@ import Foundation
 class MovieDataStore {
     
     static let sharedInstance = MovieDataStore() // allows us to have one instance of datastore
-    private init() {} //make sure people aren't trying to create multiple instances of the singleton (esp since purpose of singleton is to initalized one time only and be passed around)
+    private init() {} //make sure people aren't trying to create multiple instances of the singleton (esp since purpose of singleton is to initialized one time only and be passed around)
+    
     
     var movieResults: [Movie] = []
     var totalSearchResults : Int = 0
-    //    var searchedTitle = String()
-    // var searchedID = String()
     var plotSummary = String()
-    // var resultPage: Int = 1
+    var resultPage: Int = 1
     
-    func getMovieBasicSearchResultsWithCompletion(searchedTerm: String, completion: (Bool) ->()) {
+    
+    
+    func getSearchResultsByPageWithCompletion(searchedTerm: String, searchPage: Int, completion: (Bool) ->()) {
         
-        print(searchedTerm)
-        
-        //    OMDBAPIClient.getMovieBasicSearchResults(searchedTitle, searchPage: resultPage) { (resultsArray) in
-        
-        /* to do:
-         1) get array of results form json,
-         2) loop over array to create movie objects,
-         3) add movie objects to datastore array
-         4) use completion handler to inform collection view that array of movies is ready
-         */
-        OMDBAPIClient.getMovieBasicSearchResults(searchedTerm) { (resultsDictionary) in
+        OMDBAPIClient.getSearchResultsByPage(searchedTerm, searchPage: resultPage) { (resultsDictionary) in
             
-            //            for key in resultsDictionary.keys {
-            //
-            //                if key == "totalResults"{
-            
-            self.totalSearchResults = (resultsDictionary["totalResults"]?.integerValue)!
+            guard let totalResults = resultsDictionary["totalResults"] as? String else {return}
+            self.totalSearchResults = Int(totalResults)!
+            print(self.totalSearchResults)
             
             if self.movieResults.count <= self.totalSearchResults {
+                self.resultPage += 1
                 
                 guard let resultsArray = resultsDictionary["Search"] as? [[String: AnyObject]] else {return}
                 
                 for dictionary in resultsArray {
                     
                     let result = dictionary
-                    //                as? NSDictionary else {fatalError("Object in resultsArray is of non-dictionary type")}
                     
-                    if let movie = Movie(basicDictionary: result) { //that way if movie returns as nil from search, won't be added to movies array
-                        
-                        print("I am equal to results poster \(movie.moviePosterURL)")
+                    if let movie = Movie(basicDictionary: result) {
                         
                         self.movieResults.append(movie)
+                        
                     }
                 }
                 
-                
             } else if self.movieResults.count > self.totalSearchResults {
-                
+                print(self.totalSearchResults)
+                print("error case")
                 self.movieResults.removeAll()
             }
+            completion(true)
+        }
+    }
+    
+    
+    //use existing movieObject.ID as parameter instead of passing a string
+    //    so when you're saving in coredata, you're moving movie & its properties (title & year)
+    
+    func getShortPlotDescriptionFromSearchWithCompletion(movie: Movie, completion: (Bool)-> ()) {
+        
+        
+        OMDBAPIClient.getShortPlotDescriptionFromSearch(movie.imdbID) { (shortPlotResult) in
+            // TO DO: additional details to dipsplay
+            //            let shortPlotMovie = Movie(fullDictionary: shortPlotResult)
+            //            shortPlotMovie.plot = shortPlotResult["Plot"] as! String
+            //            print("i am equal to the short plot : \(shortPlotMovie.plot)")
             
             
+            //if movieID is true/right ID, update my labels or pass the plot info
+            completion(true)
+        }
+        //pagination, compare movie array count to total resuls count, if not: don't make that api call, check response
         
-        //            if moviesResults.count == pagination array count"totalResults"
-        //        self.movieResults.removeAll() // figure out some logic because only want to removeAll when it's a brand new search, may want to append some information to array ( ie. movies on next page until get all results added to results array) also will be accessing "search" and for pagination "totalResults", comparing results count to...
-        
-        
-        
-        //            for dictionary in resultsArray {
-        //
-        //               let result = dictionary
-        ////                as? NSDictionary else {fatalError("Object in resultsArray is of non-dictionary type")}
-        //
-        //                if let movie = Movie(basicDictionary: result) { //that way if movie returns as nil from search, won't be added to movies array
-        //
-        //                print("I am equal to results poster \(movie.moviePosterURL)")
-        //
-        //                self.movieResults.append(movie)
-        //                }
-        //            }
-        completion(true)
     }
-}
-
-
-//use existing movieObject.ID as parameter instead of passing a string
-//    so when you're saving in coredata, you're moving movie & its properties (title & year)
-
-func getShortPlotDescriptionFromSearchWithCompletion(movie: Movie, completion: (Bool)-> ()) {
     
     
-    OMDBAPIClient.getShortPlotDescriptionFromSearch(movie.imdbID) { (shortPlotResult) in
-        // TO DO: additional details to dipsplau
-        //            let shortPlotMovie = Movie(fullDictionary: shortPlotResult)
-        //            shortPlotMovie.plot = shortPlotResult["Plot"] as! String
-        //            print("i am equal to the short plot : \(shortPlotMovie.plot)")
-        //i don't really know what i'm trying to get here to be honest
-        
-        //if movieID is true/right ID, update my labels or pass the plot info
-        completion(true)
-    }
-    //pagination, compare movie array count to total resuls count, if not don't make that api call, check response
     
-}
-
-
-
-
-//        func getFullPlotDescriptionFromSearch(searchedID, completion: () -> ()) {
-//
-//            OMDBAPIClient.getPlotDescriptionFromSearch(searchedID, plotType: plotSummary) { (resultDictionary) in
-//                for key in resultDictionary.allKeys {
-//                    //i don't really know what i'm trying to get here to be honest
-//                }
-//            }
-//
-//
-//
-//        }
-
-
+    
+    //        func getFullPlotDescriptionFromSearch(searchedID, completion: () -> ()) {
+    //
+    //            OMDBAPIClient.getPlotDescriptionFromSearch(searchedID, plotType: plotSummary) { (resultDictionary) in
+    //                for key in resultDictionary.allKeys {
+    //                    //i don't really know what i'm trying to get here to be honest
+    //                }
+    //            }
+    //
+    //
+    //
+    //        }
+    
+    
 }
 
 //
 
 //coredata goes into datastore file, but only saving favorites with poster image of facor
 
-//write func that gets detailed info with an api call that takes a ID string  & compeltion block as parameter, call it and pass it movie object you're on.
+//write func that gets detailed info with an api call that takes a ID string  & completion block as parameter, call it and pass it movie object you're on.
 
-
-//movies duplicating because during pagination, instead of turning the page and thenr eading the api. must turn the page first then read subsequent pages
+//movies duplicating because during pagination, instead of turning the page and then reading the api, must turn the page first then read subsequent pages
 //core data issues- slapchat relationships for saving favorite movies, movie object is the message, favorites is the recipient
 // pass movie object from VC to VC ie. movie.ID
 //when done with MVP, create an additional unique feature (ie. home page populated with fandago api of current movies, animating background)
