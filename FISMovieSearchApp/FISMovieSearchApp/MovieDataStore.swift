@@ -11,9 +11,8 @@ import Foundation
 
 class MovieDataStore {
     
-    static let sharedInstance = MovieDataStore() // allows us to have one instance of datastore
-    private init() {} //make sure people aren't trying to create multiple instances of the singleton (esp since purpose of singleton is to initialized one time only and be passed around)
-    
+    static let sharedInstance = MovieDataStore()
+    private init() {}
     
     var movieResults: [Movie] = []
     var totalSearchResults : Int = 0
@@ -24,7 +23,8 @@ class MovieDataStore {
     
     func getSearchResultsByPageWithCompletion(searchedTerm: String, searchPage: Int, completion: (Bool) ->()) {
         
-        OMDBAPIClient.getSearchResultsByPage(searchedTerm, searchPage: resultPage) { (resultsDictionary) in
+        
+        OMDBAPIClient.getSearchResultsByPage(searchedTerm, searchPage: searchPage) { (resultsDictionary) in
             
             guard let totalResults = resultsDictionary["totalResults"] as? String else {return}
             self.totalSearchResults = Int(totalResults)!
@@ -42,65 +42,62 @@ class MovieDataStore {
                     if let movie = Movie(basicDictionary: result) {
                         
                         self.movieResults.append(movie)
+                        print(self.movieResults.count)
+                        
+                        for movie in self.movieResults{
+                            print(movie.title)
+                            print(movie.moviePosterURL)
+                        }
+                        
                         
                     }
                 }
+                completion(true)
                 
-            } else if self.movieResults.count > self.totalSearchResults {
-                print(self.totalSearchResults)
-                print("error case")
-                self.movieResults.removeAll()
             }
-            completion(true)
+            //            else if self.movieResults.count > self.totalSearchResults {
+            //                print(self.totalSearchResults)
+            //                print("error case")
+            //                self.movieResults.removeAll()
+            //            }
         }
     }
     
     
-    //use existing movieObject.ID as parameter instead of passing a string
-    //    so when you're saving in coredata, you're moving movie & its properties (title & year)
+    //use existing movieObject.ID as parameter instead of passing a string so when you're saving in coredata, you're moving movie (movie.imdbID) & its properties (title & year)
     
-    func getShortPlotDescriptionFromSearchWithCompletion(movie: Movie, completion: (Bool)-> ()) {
+    func getShortPlotDescriptionFromSearchWithCompletion(searchedMovie: Movie, completion: (Bool)-> ()) {
         
         
-        OMDBAPIClient.getShortPlotDescriptionFromSearch(movie.imdbID) { (shortPlotResult) in
-            // TO DO: additional details to dipsplay
-            //            let shortPlotMovie = Movie(fullDictionary: shortPlotResult)
-            //            shortPlotMovie.plot = shortPlotResult["Plot"] as! String
-            //            print("i am equal to the short plot : \(shortPlotMovie.plot)")
+        OMDBAPIClient.getShortPlotDescriptionFromSearch(searchedMovie.imdbID) { (moreDetailsDictionary) in
             
+            searchedMovie.updateMovieWithMoreDetails(moreDetailsDictionary)
             
-            //if movieID is true/right ID, update my labels or pass the plot info
             completion(true)
+            
+            
+            
         }
-        //pagination, compare movie array count to total resuls count, if not: don't make that api call, check response
-        
+    
     }
     
     
     
     
-    //        func getFullPlotDescriptionFromSearch(searchedID, completion: () -> ()) {
-    //
-    //            OMDBAPIClient.getPlotDescriptionFromSearch(searchedID, plotType: plotSummary) { (resultDictionary) in
-    //                for key in resultDictionary.allKeys {
-    //                    //i don't really know what i'm trying to get here to be honest
-    //                }
-    //            }
-    //
-    //
-    //
-    //        }
+    func getFullPlotDescriptionFromSearchWithCompletion(searchedMovie: Movie, completion: (Bool) -> ()) {
+        
+        OMDBAPIClient.getFullPlotDescriptionFromSearch(searchedMovie.imdbID) { (moreDetailsDictionary) in
+            
+            searchedMovie.updateMovieWithMoreDetails(moreDetailsDictionary)
+            print("I'm the movieID in full plot datastore: \(searchedMovie.imdbID)")
+            print("I'm in data store getting plot: \(moreDetailsDictionary["Plot"])")
+            completion(true)
+            print("I'm in data store getting plot 2: \(moreDetailsDictionary["Plot"])")
+        }
+        
+        
+        
+    }
     
     
 }
-
-//
-
-//coredata goes into datastore file, but only saving favorites with poster image of facor
-
-//write func that gets detailed info with an api call that takes a ID string  & completion block as parameter, call it and pass it movie object you're on.
-
-//movies duplicating because during pagination, instead of turning the page and then reading the api, must turn the page first then read subsequent pages
-//core data issues- slapchat relationships for saving favorite movies, movie object is the message, favorites is the recipient
-// pass movie object from VC to VC ie. movie.ID
-//when done with MVP, create an additional unique feature (ie. home page populated with fandago api of current movies, animating background)

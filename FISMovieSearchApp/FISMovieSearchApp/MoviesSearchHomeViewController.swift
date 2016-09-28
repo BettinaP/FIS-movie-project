@@ -19,36 +19,55 @@ class MoviesSearchHomeViewController: UIViewController, UICollectionViewDelegate
     var defaultSearchTerms = ["love", "adventure","who", "night", "day", "space", "girl", "man", "funny"]
     var term = String()
     let searchBar = UISearchBar()
+    var passedID = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        if searchBar.text == "" || searchBar.text == " " {
-            
-            let index = Int(arc4random_uniform(9))
-            term = defaultSearchTerms[index]
         
-            store.getSearchResultsByPageWithCompletion(term, searchPage: pageNumber, completion: { success in
-                NSOperationQueue.mainQueue().addOperationWithBlock({ 
+        let index = Int(arc4random_uniform(9))
+        term = defaultSearchTerms[index]
+        
+        store.getSearchResultsByPageWithCompletion(term, searchPage: self.pageNumber, completion: { success in
+            
+            if success {
+                NSOperationQueue.mainQueue().addOperationWithBlock({
+                    print("\n\nSEARCH RESULTS:\n\n\(self.store.movieResults)\n\n")
                     self.moviesCollectionView.reloadData()
                 })
-            })
+            }
             
-            
-            
-            
-//            store.getBasicSearchResultsWithCompletion(term) { success in
-//                print("inside api call in ViewDidLoad, term passed: \(self.term)")
-//                NSOperationQueue.mainQueue().addOperationWithBlock({
-//                    self.moviesCollectionView.reloadData()
-//                    print("yo \(self.store.movieResults)")
-//                })
-//                
-//            }
-            
-        }
+        })
         
         setupCollectionView()
         
+    }
+    
+    
+    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
+        print("\n\nSEARCH BAR BUTTON CLICKED \n\n")
+        
+        self.store.movieResults.removeAll()
+        
+        term = searchBar.text!
+        let queue = NSOperationQueue()
+        queue.addOperationWithBlock {
+            self.store.getSearchResultsByPageWithCompletion(self.term, searchPage: self.pageNumber) { success in
+                // TO DO: USE DATASTORE ARRAY TO POPULATE COLLECTION VIEW
+                
+                NSOperationQueue.mainQueue().addOperationWithBlock({
+                    self.moviesCollectionView.reloadData()
+                    
+                })
+            }
+        }
+        //        if term.isEmpty == true
+        //        {
+        //            store.movieResults.removeAll()
+        //            NSOperationQueue.mainQueue().addOperationWithBlock({
+        //                self.moviesCollectionView.reloadData()
+        //            })
+        //        }
+        //       }
     }
     
     
@@ -67,8 +86,8 @@ class MoviesSearchHomeViewController: UIViewController, UICollectionViewDelegate
         layout.minimumLineSpacing = 20
         layout.minimumInteritemSpacing = 15
         layout.scrollDirection = UICollectionViewScrollDirection.Vertical
-       
-    
+        
+        
         moviesCollectionView = UICollectionView(frame: self.view.frame, collectionViewLayout: layout)
         moviesCollectionView.dataSource = self
         moviesCollectionView.delegate = self
@@ -90,35 +109,6 @@ class MoviesSearchHomeViewController: UIViewController, UICollectionViewDelegate
     
     
     // Do any additional setup after loading the view, typically from a nib.
-    
-    
-    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
-        term = searchBar.text!
-        print(term)
-        let queue = NSOperationQueue()
-    
-        queue.addOperationWithBlock {
-            self.store.getSearchResultsByPageWithCompletion(self.term, searchPage: self.pageNumber) { success in
-                
-                
-                // TO DO: USE DATASTORE ARRAY TO POPULATE COLLECTION VIEW
-                print(success)
-                NSOperationQueue.mainQueue().addOperationWithBlock({
-                    self.moviesCollectionView.reloadData()
-                    print(self.store.movieResults)
-                })
-            }
-        }
-        
-    }
-    
-    
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(true)
-        //        searchBarSearchButtonClicked(self.searchBar)
-        self.moviesCollectionView.reloadData()
-    
-    }
     
     
     
@@ -143,8 +133,34 @@ class MoviesSearchHomeViewController: UIViewController, UICollectionViewDelegate
         
         movieCell.configureMovieCell(movieSelected)
         
-        
         return movieCell
+    }
+    
+    
+    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        
+        //        let movieSelected = self.store.movieResults[indexPath.row]
+        //        self.passedID = movieSelected.imdbID
+        
+        self.performSegueWithIdentifier("searchToMovieInfo", sender: collectionView.cellForItemAtIndexPath(indexPath))
+        
+    }
+    
+    
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+      
+        //        if segue.identifier == "searchToMovieInfo" {
+        let destinationVC = segue.destinationViewController as! MovieInfoViewController
+        let selectedCell = sender as! UICollectionViewCell
+        
+        let movieSelected = self.moviesCollectionView.indexPathForCell(selectedCell)
+        
+        let movie = self.store.movieResults[movieSelected!.row]
+        
+        destinationVC.moviePassed = movie
+        
+        //        }
     }
     
     
@@ -152,25 +168,27 @@ class MoviesSearchHomeViewController: UIViewController, UICollectionViewDelegate
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         return CGSizeMake(view.frame.width/3.5, view.frame.height/3.0)
     }
-
+    
     
     
     func collectionView(collectionView: UICollectionView, willDisplayCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
         
-        if indexPath.item == self.store.movieResults.count - 2 {
-        pageNumber += 1
-        
-            store.getSearchResultsByPageWithCompletion(term, searchPage: pageNumber, completion: { success in
-            NSOperationQueue.mainQueue().addOperationWithBlock({ 
-                
-                self.moviesCollectionView.reloadData()
+        if indexPath.item == self.store.movieResults.count - 1 {
+            //            store.resultPage += 1
+            self.pageNumber += 1
+            
+            store.getSearchResultsByPageWithCompletion(term, searchPage: self.pageNumber, completion: { success in
+                NSOperationQueue.mainQueue().addOperationWithBlock({
+                    
+                    self.moviesCollectionView.reloadData()
+                })
             })
-        })
-        print("load more")
-        
+            print("load more \(indexPath.item) equals \(self.store.movieResults.count-2)")
+            
         }
-        
     }
+    
+    
     
     //    func searchBarCancelButtonClicked(searchBar: UISearchBar) {
     //           //Tells the delegate that the cancel button was tapped, typically to dismiss search bar.

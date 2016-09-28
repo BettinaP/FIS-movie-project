@@ -51,7 +51,7 @@
                     <navigationItem key="navigationItem" id="C4U-jN-8zD"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <connections>
-                        <segue destination="mSO-Rt-GiW" kind="presentation" identifier="searchToMovieInfo" id="Or5-9s-ad6"/>
+                        <segue destination="mSO-Rt-GiW" kind="show" identifier="searchToMovieInfo" id="op5-cJ-gi6"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6eB-O2-qr7" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -72,10 +72,32 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+                    <connections>
+                        <segue destination="ssr-lc-YCp" kind="show" identifier="toFullPlot" id="AtS-7o-IX3"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qCX-lO-XYb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2225.5" y="-370.5"/>
+            <point key="canvasLocation" x="2337.5" y="-352.5"/>
+        </scene>
+        <!--Full Plot View Controller-->
+        <scene sceneID="oCE-Ea-BG5">
+            <objects>
+                <viewController id="ssr-lc-YCp" customClass="FullPlotViewController" customModule="FISMovieSearchApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="fDr-CR-yCK"/>
+                        <viewControllerLayoutGuide type="bottom" id="922-LJ-w9c"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="3f5-Ei-yRw">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="7HU-iD-rFY" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2984.5" y="-352.5"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="odg-ig-Cnk">
