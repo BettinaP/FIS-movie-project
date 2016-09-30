@@ -11,14 +11,19 @@ import UIKit
 class FavoritesTableViewController: UITableViewController {
     
     var favoritesTab: UITabBarItem!
-
+    
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 //    
 //    self.tabBarController?.tabBarItem = self.favoritesTab
+        
 //    self.favoritesTab.image = UIImage.init(named: "favoriteStarIcon.png")
-//        //UITabBarItem.init(title: "Favorites", image: UIImage.init(named:"favoriteStarIcon.png"), tag: 1)
-        //self.favoritesTab.image = UIImage.init(named: "favoriteStarIcon.png")
+//    UITabBarItem.init(title: "Favorites", image: UIImage.init(named:"favoriteStarIcon.png"), tag: 1)
+//    self.favoritesTab.image = UIImage.init(named: "favoriteStarIcon.png")
+        
+        
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -35,23 +40,23 @@ class FavoritesTableViewController: UITableViewController {
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 0
+        return 1
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 0
+        return 2
     }
 
-    /*
+    
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("reuseIdentifier", forIndexPath: indexPath)
-
-        // Configure the cell...
+        let cell = tableView.dequeueReusableCellWithIdentifier("favoriteMovieCell", forIndexPath: indexPath)
+        
+        cell.backgroundColor = UIColor.magentaColor()
 
         return cell
     }
-    */
+ 
 
     /*
     // Override to support conditional editing of the table view.

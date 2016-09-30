@@ -42,13 +42,6 @@ class MovieDataStore {
                     if let movie = Movie(basicDictionary: result) {
                         
                         self.movieResults.append(movie)
-                        print(self.movieResults.count)
-                        
-                        for movie in self.movieResults{
-                            print(movie.title)
-                            print(movie.moviePosterURL)
-                        }
-                        
                         
                     }
                 }
@@ -91,8 +84,7 @@ class MovieDataStore {
             searchedMovie.updateMovieWithMoreDetails(moreDetailsDictionary)
             print("I'm the movieID in full plot datastore: \(searchedMovie.imdbID)")
             print("I'm in data store getting plot: \(moreDetailsDictionary["Plot"])")
-            completion(true)
-            print("I'm in data store getting plot 2: \(moreDetailsDictionary["Plot"])")
+            completion(true) 
         }
         
         

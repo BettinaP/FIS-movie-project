@@ -52,15 +52,21 @@ class FullPlotViewController: UIViewController {
         
         self.view.backgroundColor = UIColor.magentaColor()
         
+        
         store.getFullPlotDescriptionFromSearchWithCompletion(moviePassed) { (success) in
             if success {
                 
                 NSOperationQueue.mainQueue().addOperationWithBlock({
+                    
+//                    self.title = self.moviePassed.title.uppercaseString
+                    
                     self.fullPlotTextView.text = self.moviePassed.plot
                 })
                 
             }
         }
+        
+        
         // Do any additional setup after loading the view.
     }
     

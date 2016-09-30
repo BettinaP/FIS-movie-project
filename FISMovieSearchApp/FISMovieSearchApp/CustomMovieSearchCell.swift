@@ -20,8 +20,7 @@ class CustomMovieSearchCell: UICollectionViewCell {
     
 
     override init(frame: CGRect) {
-        super.init(frame: frame)
-//        super.init(frame:CGRect(x: 0.0, y: 0.0, width:frame.width, height: frame.height))
+        super.init(frame: frame) 
         self.backgroundColor = UIColor(white: 0.4, alpha: 0.2)
         setupViews() 
     }
@@ -78,36 +77,29 @@ class CustomMovieSearchCell: UICollectionViewCell {
  
     func configureMovieCell(movie: Movie) {
         
-//        posterView.image = UIImage(named: "no movie-icon-14032.png")
-        
-        
         self.titleLabel.text = movie.title
         self.yearLabel.text = movie.year
         
         if  movie.moviePosterURL == "N/A" {
-            
-            print("\n\nposter image = N/A\n\n")
-            posterView.image = UIImage(named: "no movie-icon-14032.png")
+
+            posterView.image = UIImage(named: "no-movie-icon-14032.png")
             
         } else if movie.moviePosterURL.characters.count > 0 {
             
-            print("\n\nposter image character count > 0\n\n")
             let posterURL = NSURL(string: movie.moviePosterURL)
             guard let unwrappedPosterURL = posterURL else {print("Could not get image URL"); return}
             print(unwrappedPosterURL)
             guard let posterData = NSData(contentsOfURL: unwrappedPosterURL) else { assertionFailure("Could not get image data"); return }
             NSOperationQueue.mainQueue().addOperationWithBlock({
-                
-                self.posterView.alpha = 0
+//  deciding whether or not to keep fade in animation of movies appearing:
+//                self.posterView.alpha = 0
                 self.posterView.image = UIImage(data: posterData)
-                UIView.animateWithDuration(0.4, animations: {
-                    self.posterView.alpha = 1
+//                UIView.animateWithDuration(0.3, animations: {
+//                    self.posterView.alpha = 1
                 })
+//
                 
-                
-                //                print(self.posterView.image)
-                
-            })
+//            })
             
         } else {
             print("\n\ndefault image\n\n")
@@ -134,8 +126,6 @@ class CustomMovieSearchCell: UICollectionViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        
-        print("\n\nprepare for reuse\n\n")
         
         self.titleLabel.text = ""
         self.yearLabel.text = ""

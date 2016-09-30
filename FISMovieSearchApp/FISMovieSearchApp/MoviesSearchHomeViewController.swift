@@ -38,6 +38,7 @@ class MoviesSearchHomeViewController: UIViewController, UICollectionViewDelegate
             
         })
         
+        
         setupCollectionView()
         
     }
@@ -56,7 +57,7 @@ class MoviesSearchHomeViewController: UIViewController, UICollectionViewDelegate
                 
                 NSOperationQueue.mainQueue().addOperationWithBlock({
                     self.moviesCollectionView.reloadData()
-                    
+                    //                        print(self.store.movieResults)
                 })
             }
         }

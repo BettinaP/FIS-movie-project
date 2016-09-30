@@ -82,6 +82,7 @@ class OMDBAPIClient {
         let shortURLString = "https://www.omdbapi.com/?i=\(movieID)&plot=short&r=json"
         let shortURL = NSURL(string: shortURLString)
         guard let unwrappedShortURL = shortURL else {fatalError("Invalid URL")}
+        
         let shortSession = NSURLSession.sharedSession()
         
         let shortTask = shortSession.dataTaskWithURL(unwrappedShortURL) { (data, response, error) in
@@ -90,7 +91,6 @@ class OMDBAPIClient {
             do {
                 
                 let shortPlotDictionary = try NSJSONSerialization.JSONObjectWithData(shortPlotData, options: NSJSONReadingOptions.AllowFragments) as! NSDictionary
-                
                 
                 print("i'm printing the short plot dictionary: \(shortPlotDictionary)")
                 completion(shortPlotDictionary)
@@ -109,11 +109,11 @@ class OMDBAPIClient {
     
     
     class func getFullPlotDescriptionFromSearch(movieID: String, completion:(NSDictionary) ->()) {
-//        let id = "tt0265208"
+ 
         let fullURLString = "https://www.omdbapi.com/?i=\(movieID)&plot=full&r=json"
-        print("I'm the movieID in api call: \(movieID)")
         let fullURL = NSURL(string: fullURLString)
         guard let unwrappedfullURL = fullURL else {fatalError("Invalid full plot URL")}
+        
         let fullSession = NSURLSession.sharedSession()
         
         let fullTask = fullSession.dataTaskWithURL(unwrappedfullURL) { (data, response, error) in
