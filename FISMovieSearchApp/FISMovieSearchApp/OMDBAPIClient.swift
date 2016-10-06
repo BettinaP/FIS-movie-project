@@ -9,30 +9,10 @@
 import Foundation
 
 class OMDBAPIClient {
-    
-    //by title & diff plot length
-    
-    // http://www.omdbapi.com/?t=Batman&y=&plot=short&r=json
-    // http://www.omdbapi.com/?t=batman&y=&plot=full&r=json
-
-    
-    //by id
-    //    http://www.omdbapi.com/?i=tt0097757&plot=short&r=json
-
+     
     
     // Search pagination added: http://www.omdbapi.com/?s=Batman&page=2
 
-    /*Search =     (
-     {
-     Poster = "http://ia.media-imdb.com/images/M/MV5BNTM3OTc0MzM2OV5BMl5BanBnXkFtZTYwNzUwMTI3._V1_SX300.jpg";
-     Title = "Batman Begins";
-     Type = movie;
-     Year = 2005;
-     imdbID = tt0372784;
-     }
-     */
-    
-    
     
     class func getSearchResultsByPage(searchTerm: String, searchPage: Int, completion:[String: AnyObject] -> ()) {
         
@@ -92,7 +72,6 @@ class OMDBAPIClient {
                 
                 let shortPlotDictionary = try NSJSONSerialization.JSONObjectWithData(shortPlotData, options: NSJSONReadingOptions.AllowFragments) as! NSDictionary
                 
-                print("i'm printing the short plot dictionary: \(shortPlotDictionary)")
                 completion(shortPlotDictionary)
                 
             } catch {
@@ -123,12 +102,8 @@ class OMDBAPIClient {
             do {
                 let fullPlotDictionary = try NSJSONSerialization.JSONObjectWithData(fullPlotData, options: NSJSONReadingOptions.AllowFragments) as! NSDictionary
                 
-                let fullPlot = fullPlotDictionary["Plot"]
-                print("i am the full dictionary: \(fullPlotDictionary)")
-                
                 completion(fullPlotDictionary)
                 
-                print("full plot dictionary: \(fullPlot)")
             } catch {
                 print("third error \(error)")
             }

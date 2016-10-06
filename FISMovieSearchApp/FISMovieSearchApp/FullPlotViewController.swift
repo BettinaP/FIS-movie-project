@@ -12,7 +12,7 @@ class FullPlotViewController: UIViewController {
     
     
     
-    let store = MovieDataStore.sharedInstance
+    var store = MovieDataStore.sharedInstance
     var moviePassed = Movie()
     let fullPlotTextView = UITextView()
     let plotSummaryLabel = UILabel()
@@ -20,6 +20,33 @@ class FullPlotViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setupFullPlotView()
+        
+        
+        store.getFullPlotDescriptionFromSearchWithCompletion(moviePassed) { (success) in
+            if success {
+                
+                NSOperationQueue.mainQueue().addOperationWithBlock({
+                    
+//                    self.title = self.moviePassed.title.uppercaseString
+                    
+                    self.fullPlotTextView.text = self.moviePassed.plot
+                })
+                
+            }
+        }
+        
+        
+        // Do any additional setup after loading the view.
+    }
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+    
+    
+    func setupFullPlotView() {
         
         plotSummaryLabel.sizeToFit()
         plotSummaryLabel.font = UIFont(name: "HelveticaNeue-Bold", size: 14.0)
@@ -52,30 +79,7 @@ class FullPlotViewController: UIViewController {
         
         self.view.backgroundColor = UIColor.magentaColor()
         
-        
-        store.getFullPlotDescriptionFromSearchWithCompletion(moviePassed) { (success) in
-            if success {
-                
-                NSOperationQueue.mainQueue().addOperationWithBlock({
-                    
-//                    self.title = self.moviePassed.title.uppercaseString
-                    
-                    self.fullPlotTextView.text = self.moviePassed.plot
-                })
-                
-            }
-        }
-        
-        
-        // Do any additional setup after loading the view.
     }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
-    
     /*
      // MARK: - Navigation
      

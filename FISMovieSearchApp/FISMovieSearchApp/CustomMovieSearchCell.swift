@@ -11,21 +11,21 @@ import UIKit
 class CustomMovieSearchCell: UICollectionViewCell {
     
     
-    let store = MovieDataStore.sharedInstance
+    var store = MovieDataStore.sharedInstance
     let titleLabel = UILabel()
     let yearLabel = UILabel()
     let posterView = UIImageView()
     let cellPosterURL = String()
     let loadingIndicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.WhiteLarge)
     
-
+    
     override init(frame: CGRect) {
-        super.init(frame: frame) 
+        super.init(frame: frame)
         self.backgroundColor = UIColor(white: 0.4, alpha: 0.2)
-        setupViews() 
+        setupViews()
     }
     
- 
+    
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -74,46 +74,60 @@ class CustomMovieSearchCell: UICollectionViewCell {
         
     }
     
- 
+    
     func configureMovieCell(movie: Movie) {
         
         self.titleLabel.text = movie.title
         self.yearLabel.text = movie.year
         
+        self.showActivityIndicator(self.posterView)
+        
         if  movie.moviePosterURL == "N/A" {
-
+            
             posterView.image = UIImage(named: "no-movie-icon-14032.png")
+            self.stopActivityIndicator(self.posterView)
             
         } else if movie.moviePosterURL.characters.count > 0 {
+            
             
             let posterURL = NSURL(string: movie.moviePosterURL)
             guard let unwrappedPosterURL = posterURL else {print("Could not get image URL"); return}
             print(unwrappedPosterURL)
             guard let posterData = NSData(contentsOfURL: unwrappedPosterURL) else { assertionFailure("Could not get image data"); return }
             NSOperationQueue.mainQueue().addOperationWithBlock({
-//  deciding whether or not to keep fade in animation of movies appearing:
-//                self.posterView.alpha = 0
-                self.posterView.image = UIImage(data: posterData)
-//                UIView.animateWithDuration(0.3, animations: {
-//                    self.posterView.alpha = 1
-                })
-//
                 
-//            })
+                //TODO: Put back in the loader that needs to go here
+                
+                
+                //  deciding whether or not to keep fade in animation of movies appearing:
+                self.posterView.alpha = 0
+                
+                self.posterView.image = UIImage(data: posterData)
+                
+                
+//                if self.posterView.image == UIImage(data: posterData) {
+//                    self.stopActivityIndicator(self.posterView)
+//                }
+                
+                UIView.animateWithDuration(0.3, animations: {
+                        self.posterView.alpha = 1
+                })
+                self.stopActivityIndicator(self.posterView)
+            
+            })
             
         } else {
-            print("\n\ndefault image\n\n")
             posterView.image = UIImage(named: "no movie-icon-14032.png")
             
         }
         
-
+        
     }
     
     
     
-    func showActivityIndicator(loadingView: UIView){
-    
+    func showActivityIndicator(loadingView: UIView) {
+        
         loadingIndicator.frame = frame
         loadingIndicator.center = loadingView.center
         loadingIndicator.hidesWhenStopped = true
@@ -121,7 +135,13 @@ class CustomMovieSearchCell: UICollectionViewCell {
         self.addSubview(loadingView)
         loadingIndicator.startAnimating()
         
+    }
     
+    func stopActivityIndicator(loadingView: UIView){
+        
+        loadingIndicator.stopAnimating()
+        
+        loadingIndicator.hidesWhenStopped = true
     }
     
     override func prepareForReuse() {
@@ -130,9 +150,9 @@ class CustomMovieSearchCell: UICollectionViewCell {
         self.titleLabel.text = ""
         self.yearLabel.text = ""
         self.posterView.image = nil
-    
+        
     }
     
-
-
+    
+    
 }

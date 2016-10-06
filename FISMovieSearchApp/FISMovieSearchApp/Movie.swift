@@ -10,12 +10,6 @@ import Foundation
 
 class Movie {
     
-    //    self.title = movieTitle
-    //    self.year = year
-    //    self.imdbID = movieIMDBid
-    //    self.type = validType
-    //    self.moviePosterImage = moviePoster
-    
     // Created through basic search Dictionary init
     var title: String
     var year: String
@@ -25,22 +19,23 @@ class Movie {
     
     // Created in full dictionary
     
-    var rated: String = ""
-    var released: String = ""
-    var runTime: String = ""
-    var genre: String = ""
-    var director: String = ""
-    var writer: String = ""
-    var actors: String = ""
-    var plot: String = ""
-    var language : String = ""
-    var awards: String = ""
-    var imdbRating: String = ""
-    var metaScore: String = ""
-    var response: String = ""
+    var rated: String = "N/A"
+    var released: String = "N/A"
+    var runTime: String = "N/A"
+    var genre: String = "N/A"
+    var director: String = "N/A"
+    var writer: String = "N/A"
+    var actors: String = "N/A"
+    var plot: String = "N/A"
+    var language : String = "N/A"
+    var awards: String = "N/A"
+    var imdbRating: String = "N/A"
+    var metaScore: String = "N/A"
+    var response: String = "N/A"
     
-    init?(basicDictionary: NSDictionary) {//init? makes initializer failable so if not successfully created, then return nil and movie won't be included in search results
- 
+    //MARK: Walk me through this - Johann
+    
+    init?(basicDictionary: NSDictionary) {
         guard let
             movieTitle = basicDictionary["Title"] as? String,
             movieIMDBid = basicDictionary["imdbID"] as? String,
@@ -60,59 +55,38 @@ class Movie {
     
     init(){
         
-        self.title = ""
-        self.year = ""
-        self.imdbID = ""
-        self.type = ""
-        self.moviePosterURL = ""
-        self.rated = ""
-        self.released = ""
-        self.runTime = ""
-        self.genre = ""
-        self.director = ""
-        self.writer = ""
-        self.actors = ""
-        self.plot = ""
-        self.language = ""
-        self.awards = ""
-        self.imdbRating = ""
-        self.metaScore = ""
-        self.response = ""
+        self.title = "N/A"
+        self.year = "N/A"
+        self.imdbID = "N/A"
+        self.type = "N/A"
+        self.moviePosterURL = "N/A"
+        self.rated = "N/A"
+        self.released = "N/A"
+        self.runTime = "N/A"
+        self.genre = "N/A"
+        self.director = "N/A"
+        self.writer = "N/A"
+        self.actors = "N/A"
+        self.plot = "N/A"
+        self.language = "N/A"
+        self.awards = "N/A"
+        self.imdbRating = "N/A"
+        self.metaScore = "N/A"
+        self.response = "N/A"
         
         
         
     }
     
+//   TODO: Make Groups for the appropriate classes --I don't understand what this means, what classes, isn't there only one class...?
     
-//    func updateMovieWithShortPlot(completion: () -> Void) {
-//        
-//        OMDBAPIClient.getShortPlotDescriptionFromSearch(imdbID) { dictionary in
-//            
-//            self.updateMovieWithMoreDetails(dictionary)
-//            
-//            completion()
-//            
-//        }
-//        
-//        
-//    }
-//    
-//    
-//    func updateMovieWithFullPlot(completion: () -> Void) {
-//        
-//        OMDBAPIClient.getFullPlotDescriptionFromSearch(imdbID) { (dictionary) in
-//            
-//            self.updateMovieWithMoreDetails(dictionary)
-//            
-//            completion()
-//        }
-//    
-//    }
+    
+    //MARK: Explain - Johann
     
     func updateMovieWithMoreDetails(moreDetailsDictionary: NSDictionary) {
         
         
-        rated = moreDetailsDictionary["Rated"] as? String ?? "No Rating"
+        rated = moreDetailsDictionary["Rated"] as? String ?? "N/A"
         released = moreDetailsDictionary["Released"] as? String ?? "N/A"
         runTime = moreDetailsDictionary["Runtime"] as? String ?? "N/A"
         genre = moreDetailsDictionary["Genre"] as? String ?? "N/A"

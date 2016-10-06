@@ -12,8 +12,7 @@ private let reuseIdentifier = "movieCollectionCell"
 
 class MoviesSearchHomeViewController: UIViewController, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UICollectionViewDelegate, UISearchBarDelegate {
     
-    
-    let store = MovieDataStore.sharedInstance
+    var store = MovieDataStore.sharedInstance
     var pageNumber = 1
     var moviesCollectionView: UICollectionView!
     var defaultSearchTerms = ["love", "adventure","who", "night", "day", "space", "girl", "man", "funny"]
@@ -24,17 +23,19 @@ class MoviesSearchHomeViewController: UIViewController, UICollectionViewDelegate
     override func viewDidLoad() {
         super.viewDidLoad()
         
+//        store = MovieDataStore.sharedInstance
+        
         let index = Int(arc4random_uniform(9))
         term = defaultSearchTerms[index]
         
-        store.getSearchResultsByPageWithCompletion(term, searchPage: self.pageNumber, completion: { success in
-            
-            if success {
+        store.getSearchResultsByPageWithCompletion(term, searchPage: self.pageNumber, completion: { result in
+            print(result)
+//            if result {
                 NSOperationQueue.mainQueue().addOperationWithBlock({
                     print("\n\nSEARCH RESULTS:\n\n\(self.store.movieResults)\n\n")
                     self.moviesCollectionView.reloadData()
                 })
-            }
+//            }
             
         })
         

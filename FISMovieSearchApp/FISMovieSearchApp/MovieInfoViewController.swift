@@ -7,10 +7,11 @@
 //
 
 import UIKit
+import CoreData
 
 class MovieInfoViewController: UIViewController {
     
-    let store = MovieDataStore.sharedInstance
+    var store = MovieDataStore.sharedInstance
     var moviePassed = Movie()
     var detailTitle = String()
     var detailPassedID = String()
@@ -26,8 +27,9 @@ class MovieInfoViewController: UIViewController {
     let detailsStackView = UIStackView()
     let backviewForStack = UIView()
     let favoriteButton = UIButton()
-//    let favoriteButton = UIBarButtonItem()
-    //add to nav bar: google "add title to be listed in nav bar", back button and favorites star icon
+//  let favoriteButton = UIBarButtonItem()
+    
+// add to nav bar: google "add title to be listed in nav bar", back button and favorites star icon
     
     
     
@@ -35,27 +37,22 @@ class MovieInfoViewController: UIViewController {
         super.viewDidLoad()
         setupView()
         allConstraints()
-        
-//        print("i'm the nav bar title: \(self.navigationController?.navigationItem.title)")
-        
-        store.getShortPlotDescriptionFromSearchWithCompletion(moviePassed) { (success) in
-            print("in short plot api in detailVC")
-            if success{
+      
+        if moviePassed.title != "N/A" {
+            store.getShortPlotDescriptionFromSearchWithCompletion(moviePassed) { (success) in
                 
-                self.configureView(self.moviePassed)
-                
+                if success{
+                    
+                    self.configureView(self.moviePassed)
+                    
+                }
             }
         }
-        
-        self.navigationItem.title =  detailTitle.uppercaseString 
-        // Do any additional setup after loading the view.
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(true)
         
-        //        self.navigationController?.navigationItem.title = self.detailTitle
-        //        self.navigationController?.navigationBar.
     }
     
     
@@ -69,17 +66,19 @@ class MovieInfoViewController: UIViewController {
 //          self.navigationItem.rightBarButtonItem = favoriteButton
 //        
         favoriteButton.setImage(UIImage(named: "favoriteStarIcon"), forState: .Normal)
-        favoriteButton.imageView?.image.
+//        favoriteButton.imageView?.tintColor = UIColor.whiteColor()
         favoriteButton.frame = CGRectMake(0, 0, 30, 30)
-        favoriteButton.imageView?.backgroundColor = UIColor.clearColor()
-        favoriteButton.addTarget(self, action: Selector("action"), forControlEvents: .TouchUpInside)
+        favoriteButton.layer.cornerRadius = 5
+//        favoriteButton.backgroundColor = UIColor.clearColor()
+        favoriteButton.addTarget(self, action: #selector(favoriteStarButtonTapped), forControlEvents: .TouchUpInside)
+        
         self.navigationItem.setRightBarButtonItem(UIBarButtonItem(customView: favoriteButton), animated: true)
         self.navigationItem.rightBarButtonItem?.customView = favoriteButton
         
         self.navigationController?.navigationBar.tintColor = UIColor.blackColor()
-        
+          // self.view.backgroundColor = UIColor(hue: <#T##CGFloat#>, saturation: <#T##CGFloat#>, brightness: <#T##CGFloat#>, alpha: <#T##CGFloat#>)
         self.backviewForStack.backgroundColor = UIColor.redColor()
-        // self.view.backgroundColor = UIColor(hue: <#T##CGFloat#>, saturation: <#T##CGFloat#>, brightness: <#T##CGFloat#>, alpha: <#T##CGFloat#>)
+      
         
         detailPosterView.contentMode = .Top
         detailPosterView.clipsToBounds = true
@@ -135,7 +134,7 @@ class MovieInfoViewController: UIViewController {
         fullPlotLinkButton.layer.borderColor = UIColor.blackColor().CGColor
         fullPlotLinkButton.addTarget(self, action: #selector(fullPlotButtonClicked), forControlEvents: .TouchUpInside)
         //        if self.fullPlotButtonClicked() {
-        //            fullPlotLinkButton.h
+        //            fullPlotLinkButton.highlight
         //        }
     }
     
@@ -220,7 +219,7 @@ class MovieInfoViewController: UIViewController {
         fullPlotLinkButton.centerXAnchor.constraintEqualToAnchor(self.view.centerXAnchor).active = true
         fullPlotLinkButton.topAnchor.constraintEqualToAnchor(self.backviewForStack.bottomAnchor, constant: view.frame.height * 0.011).active = true
         fullPlotLinkButton.widthAnchor.constraintEqualToAnchor(self.view.widthAnchor, multiplier: 0.5).active = true
-        fullPlotLinkButton.heightAnchor.constraintEqualToAnchor(self.view.heightAnchor, multiplier: 0.023).active = true
+        fullPlotLinkButton.heightAnchor.constraintEqualToAnchor(self.view.heightAnchor, multiplier: 0.026).active = true
         
         detailsStackView.translatesAutoresizingMaskIntoConstraints = false
         detailsStackView.centerXAnchor.constraintEqualToAnchor(self.view.centerXAnchor).active = true
@@ -233,7 +232,7 @@ class MovieInfoViewController: UIViewController {
     
     func configureView(movieSelected: Movie){
         
-        
+        self.navigationItem.title =  detailTitle.uppercaseString
         
         detailPosterView.image = UIImage(named: "no movie-icon-14032.png")
         
@@ -282,7 +281,30 @@ class MovieInfoViewController: UIViewController {
         print("button clicked")
     }
     
-    //    func addBoldText(fullstring: String, boldPartOfString: String, font: UIFont, boldFont:  UIFont){
+    
+    func favoriteStarButtonTapped() {
+        print("fav button tapped , in function")
+        var favoritedMovie = NSEntityDescription.insertNewObjectForEntityForName(FavoriteMovie.entityName, inManagedObjectContext: store.managedObjectContext) as! FavoriteMovie
+        favoritedMovie.title = moviePassed.title
+        favoritedMovie.year = moviePassed.year
+        favoritedMovie.imdbID = moviePassed.imdbID
+        favoritedMovie.type = moviePassed.type
+        favoritedMovie.posterURL = moviePassed.moviePosterURL
+        favoritedMovie.director = moviePassed.director
+        favoritedMovie.writer = moviePassed.writer
+        favoritedMovie.actors = moviePassed.actors
+        favoritedMovie.plot = moviePassed.plot
+        
+        store.favoriteMovies.append(favoritedMovie)
+        print("am i appending movies count: \(store.favoriteMovies.count)")
+        store.saveContext()
+    
+    }
+    
+    
+    
+    
+   //    func addBoldText(fullstring: String, boldPartOfString: String, font: UIFont, boldFont:  UIFont){
     //
     //        let nonBoldFontAttribute = NSFontAttributeName(font as! UIFont)
     //

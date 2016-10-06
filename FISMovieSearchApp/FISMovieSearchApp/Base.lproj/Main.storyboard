@@ -5,39 +5,6 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
     <scenes>
-        <!--Favorites Table View Controller-->
-        <scene sceneID="JbM-Ej-Pgg">
-            <objects>
-                <tableViewController id="6v3-0S-Sub" customClass="FavoritesTableViewController" customModule="FISMovieSearchApp" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="PSk-RI-fTS">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="favoriteMovieCell" id="Wku-bt-f2B">
-                                <rect key="frame" x="0.0" y="92" width="375" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Wku-bt-f2B" id="7Fv-Ft-udb">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </tableViewCellContentView>
-                                <connections>
-                                    <segue destination="mSO-Rt-GiW" kind="show" identifier="favoritesToMovieInfo" id="rLC-Mr-LbQ"/>
-                                </connections>
-                            </tableViewCell>
-                        </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="6v3-0S-Sub" id="dbM-EU-Qha"/>
-                            <outlet property="delegate" destination="6v3-0S-Sub" id="qf4-At-pfa"/>
-                        </connections>
-                    </tableView>
-                    <navigationItem key="navigationItem" id="VUT-ft-tSa"/>
-                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Amc-hM-3H8" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1595.5" y="618.5"/>
-        </scene>
         <!--Movies Search Home View Controller-->
         <scene sceneID="tyf-ev-h4K">
             <objects>
@@ -133,12 +100,35 @@
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="6v3-0S-Sub" kind="relationship" relationship="rootViewController" id="gTO-GG-3xF"/>
+                        <segue destination="huu-79-KZD" kind="relationship" relationship="rootViewController" id="sNh-dD-o9P"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pdJ-vM-sBb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1008.5" y="618.5"/>
+            <point key="canvasLocation" x="1022.5" y="494.5"/>
+        </scene>
+        <!--Favorites View Controller-->
+        <scene sceneID="uwX-Ye-fEx">
+            <objects>
+                <viewController id="huu-79-KZD" customClass="FavoritesViewController" customModule="FISMovieSearchApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="HBv-Vq-aaG"/>
+                        <viewControllerLayoutGuide type="bottom" id="gKQ-i7-0u5"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="lVA-Uy-FJL">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="pba-vF-FAw"/>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+                    <connections>
+                        <segue destination="mSO-Rt-GiW" kind="show" identifier="favoritesToMovieInfo" id="v5H-dM-1He"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkJ-Wv-JG3" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1615.5" y="504.5"/>
         </scene>
         <!--Movies-->
         <scene sceneID="NP7-aQ-Pot">
@@ -161,6 +151,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="rLC-Mr-LbQ"/>
+        <segue reference="v5H-dM-1He"/>
     </inferredMetricsTieBreakers>
 </document>
