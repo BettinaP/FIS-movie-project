@@ -23,6 +23,9 @@ class MovieInfoViewController: UIViewController {
     let starsLabel = UILabel()
     let imdbScoreLabel = UILabel()
     let metascoreLabel = UILabel()
+    let genreLabel = UILabel()
+    let ratedLabel = UILabel()
+    let runtimeLabel = UILabel()
     var fullPlotLinkButton = UIButton()
     let detailsStackView = UIStackView()
     let backviewForStack = UIView()
@@ -50,6 +53,7 @@ class MovieInfoViewController: UIViewController {
         }
     }
     
+    
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(true)
         
@@ -57,7 +61,7 @@ class MovieInfoViewController: UIViewController {
     
     
     func setupView(){
-//        self.view.backgroundColor = UIColor.cyanColor()
+      self.view.backgroundColor = UIColor.cyanColor()
 //        self.view.backgroundColor = UIColor(white: 0.3, alpha: 0.5)
         
        
@@ -126,6 +130,23 @@ class MovieInfoViewController: UIViewController {
         metascoreLabel.sizeToFit()
         metascoreLabel.font = UIFont(name: "HelveticaNeue", size: 14.0)
         
+        genreLabel.adjustsFontSizeToFitWidth = true
+        genreLabel.sizeToFit()
+        genreLabel.font = UIFont(name:"HelveticaNeue", size: 14.0)
+        
+        runtimeLabel.adjustsFontSizeToFitWidth = true
+        runtimeLabel.sizeToFit()
+        runtimeLabel.font = UIFont(name:"HelveticaNeue", size: 14.0)
+        
+        ratedLabel.adjustsFontSizeToFitWidth = true
+        ratedLabel.sizeToFit()
+        ratedLabel.font = UIFont(name:"HelveticaNeue-Bold", size: 14.0)
+        ratedLabel.textAlignment = .Center
+        ratedLabel.intrinsicContentSize().width
+        ratedLabel.layer.borderColor = UIColor.blackColor().CGColor
+        ratedLabel.layer.borderWidth = 1
+        
+        
         fullPlotLinkButton.setTitleColor(UIColor.blackColor(), forState: .Normal)
         fullPlotLinkButton.titleLabel?.font = UIFont(name: "HelveticaNeue-Bold", size: 14.0)
         fullPlotLinkButton.sizeToFit()
@@ -133,6 +154,7 @@ class MovieInfoViewController: UIViewController {
         fullPlotLinkButton.layer.cornerRadius = 5
         fullPlotLinkButton.layer.borderColor = UIColor.blackColor().CGColor
         fullPlotLinkButton.addTarget(self, action: #selector(fullPlotButtonClicked), forControlEvents: .TouchUpInside)
+        fullPlotLinkButton.backgroundColor = UIColor.yellowColor()
         //        if self.fullPlotButtonClicked() {
         //            fullPlotLinkButton.highlight
         //        }
@@ -151,19 +173,23 @@ class MovieInfoViewController: UIViewController {
         backviewForStack.centerXAnchor.constraintEqualToAnchor(self.view.centerXAnchor).active = true
         //        backviewForStack.centerYAnchor.constraintEqualToAnchor(self.view.centerYAnchor, constant: view.frame.height * 0.25).active = true
         backviewForStack.widthAnchor.constraintEqualToAnchor(self.view.widthAnchor, multiplier: 0.95).active = true
-        backviewForStack.heightAnchor.constraintEqualToAnchor(self.view.heightAnchor, multiplier: 0.30).active = true
+        backviewForStack.heightAnchor.constraintEqualToAnchor(self.view.heightAnchor, multiplier: 0.32).active = true
         backviewForStack.topAnchor.constraintEqualToAnchor(self.shortPlotTextView.bottomAnchor, constant: view.frame.height * 0.01).active = true
         
         detailsStackView.axis = .Vertical
         detailsStackView.distribution = .Fill
         detailsStackView.alignment = .Center
         
+        self.detailsStackView.addSubview(ratedLabel)
+        self.detailsStackView.addSubview(runtimeLabel)
+        self.detailsStackView.addSubview(genreLabel)
         self.detailsStackView.addSubview(releasedLabel)
         self.detailsStackView.addSubview(directorLabel)
         self.detailsStackView.addSubview(writerLabel)
         self.detailsStackView.addSubview(starsLabel)
         self.detailsStackView.addSubview(imdbScoreLabel)
         self.detailsStackView.addSubview(metascoreLabel)
+        
         
         self.backviewForStack.addSubview(detailsStackView)
         
@@ -180,10 +206,30 @@ class MovieInfoViewController: UIViewController {
         shortPlotTextView.heightAnchor.constraintEqualToAnchor(self.view.heightAnchor, multiplier: 0.12).active = true
         shortPlotTextView.widthAnchor.constraintEqualToAnchor(self.view.widthAnchor, multiplier: 0.95).active = true
         
+        ratedLabel.translatesAutoresizingMaskIntoConstraints = false
+//        ratedLabel.centerXAnchor.constraintEqualToAnchor(self.view.centerXAnchor).active = true
+        ratedLabel.topAnchor.constraintEqualToAnchor(self.backviewForStack.topAnchor).active = true
+        //        ratedLabel.topAnchor.constraintEqualToAnchor(self.shortPlotTextView.bottomAnchor, constant: view.frame.height * 0.02).active = true
+        ratedLabel.widthAnchor.constraintEqualToAnchor(self.backviewForStack.widthAnchor, multiplier: 0.11).active = true
+        ratedLabel.leadingAnchor.constraintEqualToAnchor(self.backviewForStack.leadingAnchor).active = true
+        
+        runtimeLabel.translatesAutoresizingMaskIntoConstraints = false
+//        runtimeLabel.centerXAnchor.constraintEqualToAnchor(self.view.centerXAnchor).active = true
+        runtimeLabel.topAnchor.constraintEqualToAnchor(self.backviewForStack.topAnchor).active = true
+        runtimeLabel.widthAnchor.constraintEqualToAnchor(self.backviewForStack.widthAnchor, multiplier: 0.2).active = true
+        runtimeLabel.leadingAnchor.constraintEqualToAnchor(self.ratedLabel.trailingAnchor).active = true
+//        runtimeLabel.trailingAnchor.constraintEqualToAnchor(self.backviewForStack.trailingAnchor).active = true
+      
+         //        runtimeLabel.topAnchor.constraintEqualToAnchor(self.shortPlotTextView.bottomAnchor, constant: view.frame.height * 0.02).active = true
+        
+        genreLabel.translatesAutoresizingMaskIntoConstraints = false
+        genreLabel.centerXAnchor.constraintEqualToAnchor(self.view.centerXAnchor).active = true
+        genreLabel.topAnchor.constraintEqualToAnchor(self.ratedLabel.bottomAnchor, constant: view.frame.height * 0.01).active = true
+        genreLabel.leadingAnchor.constraintEqualToAnchor(self.backviewForStack.leadingAnchor).active = true
+        
         releasedLabel.translatesAutoresizingMaskIntoConstraints = false
         releasedLabel.centerXAnchor.constraintEqualToAnchor(self.view.centerXAnchor).active = true
-        releasedLabel.topAnchor.constraintEqualToAnchor(self.backviewForStack.topAnchor).active = true
-        //        releasedLabel.topAnchor.constraintEqualToAnchor(self.shortPlotTextView.bottomAnchor, constant: view.frame.height * 0.02).active = true
+        releasedLabel.topAnchor.constraintEqualToAnchor(self.genreLabel.bottomAnchor, constant: view.frame.height * 0.01).active = true
         releasedLabel.leadingAnchor.constraintEqualToAnchor(self.backviewForStack.leadingAnchor).active = true
         
         directorLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -217,13 +263,12 @@ class MovieInfoViewController: UIViewController {
         
         fullPlotLinkButton.translatesAutoresizingMaskIntoConstraints = false
         fullPlotLinkButton.centerXAnchor.constraintEqualToAnchor(self.view.centerXAnchor).active = true
-        fullPlotLinkButton.topAnchor.constraintEqualToAnchor(self.backviewForStack.bottomAnchor, constant: view.frame.height * 0.011).active = true
+        fullPlotLinkButton.topAnchor.constraintEqualToAnchor(self.backviewForStack.bottomAnchor, constant: view.frame.height * 0.01).active = true
         fullPlotLinkButton.widthAnchor.constraintEqualToAnchor(self.view.widthAnchor, multiplier: 0.5).active = true
         fullPlotLinkButton.heightAnchor.constraintEqualToAnchor(self.view.heightAnchor, multiplier: 0.026).active = true
         
         detailsStackView.translatesAutoresizingMaskIntoConstraints = false
         detailsStackView.centerXAnchor.constraintEqualToAnchor(self.view.centerXAnchor).active = true
-        //        detailsStackView.centerYAnchor.constraintEqualToAnchor(self.view.centerYAnchor).active = true
         
         detailsStackView.widthAnchor.constraintEqualToAnchor(self.backviewForStack.widthAnchor).active = true
         //        detailsStackView.leadingAnchor.constraintEqualToAnchor(self.backviewForStack.leadingAnchor).active = true
@@ -263,11 +308,14 @@ class MovieInfoViewController: UIViewController {
             }
             
             self.shortPlotTextView.text = movieSelected.plot
+            self.ratedLabel.text = "\(movieSelected.rated)"
+            self.runtimeLabel.text = "  \(movieSelected.runTime)"
+            self.genreLabel.text = "GENRE: \(movieSelected.genre)"
             self.releasedLabel.text = "RELEASED: \(movieSelected.released)"
             self.directorLabel.text = "DIRECTOR: \(movieSelected.director)"
             self.writerLabel.text = "WRITER: \(movieSelected.writer)"
             self.starsLabel.text = "STARRING: \(movieSelected.actors)"
-            self.imdbScoreLabel.text = "IMDB Score: \(movieSelected.imdbID)"
+            self.imdbScoreLabel.text = "IMDB Score: \(movieSelected.imdbRating)"
             self.metascoreLabel.text = "Metascore: \(movieSelected.metaScore)"
             self.fullPlotLinkButton.setTitle("FULL PLOT DESCRIPTION", forState: .Normal)
             
@@ -294,6 +342,13 @@ class MovieInfoViewController: UIViewController {
         favoritedMovie.writer = moviePassed.writer
         favoritedMovie.actors = moviePassed.actors
         favoritedMovie.plot = moviePassed.plot
+        favoritedMovie.genre = moviePassed.genre
+        favoritedMovie.runtime = moviePassed.runTime
+        favoritedMovie.metaScore = moviePassed.metaScore
+        favoritedMovie.imdbRating = moviePassed.imdbRating
+        favoritedMovie.rated = moviePassed.rated
+        
+        
         
         store.favoriteMovies.append(favoritedMovie)
         print("am i appending movies count: \(store.favoriteMovies.count)")

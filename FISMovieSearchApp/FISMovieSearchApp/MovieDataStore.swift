@@ -116,8 +116,7 @@ class MovieDataStore {
         if favoriteMovies.count == 0 {
             generateTestData()
             
-        }
-        print("fetching data, fav movies count in DS: \(favoriteMovies.count)")
+        } 
     }
     
     

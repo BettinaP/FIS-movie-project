@@ -23,19 +23,18 @@ class MoviesSearchHomeViewController: UIViewController, UICollectionViewDelegate
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        store = MovieDataStore.sharedInstance
         
         let index = Int(arc4random_uniform(9))
         term = defaultSearchTerms[index]
         
         store.getSearchResultsByPageWithCompletion(term, searchPage: self.pageNumber, completion: { result in
-            print(result)
-//            if result {
+            
+ 
                 NSOperationQueue.mainQueue().addOperationWithBlock({
-                    print("\n\nSEARCH RESULTS:\n\n\(self.store.movieResults)\n\n")
+                    
                     self.moviesCollectionView.reloadData()
                 })
-//            }
+ 
             
         })
         
@@ -46,22 +45,31 @@ class MoviesSearchHomeViewController: UIViewController, UICollectionViewDelegate
     
     
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
-        print("\n\nSEARCH BAR BUTTON CLICKED \n\n")
+        
         
         self.store.movieResults.removeAll()
         
         term = searchBar.text!
         let queue = NSOperationQueue()
+        
         queue.addOperationWithBlock {
             self.store.getSearchResultsByPageWithCompletion(self.term, searchPage: self.pageNumber) { success in
                 // TO DO: USE DATASTORE ARRAY TO POPULATE COLLECTION VIEW
                 
+                if success {
                 NSOperationQueue.mainQueue().addOperationWithBlock({
-                    self.moviesCollectionView.reloadData()
-                    //                        print(self.store.movieResults)
+                    self.moviesCollectionView.reloadData() 
+//
+//                    self.moviesCollectionView.reloadItemsAtIndexPaths(
+                   
                 })
+                }
             }
         }
+        
+       self.moviesCollectionView.reloadData()
+        
+        
         //        if term.isEmpty == true
         //        {
         //            store.movieResults.removeAll()
@@ -131,6 +139,7 @@ class MoviesSearchHomeViewController: UIViewController, UICollectionViewDelegate
         
         let movieCell = collectionView.dequeueReusableCellWithReuseIdentifier(NSStringFromClass(CustomMovieSearchCell), forIndexPath: indexPath) as! CustomMovieSearchCell
         
+        print(indexPath.row)
         let movieSelected = self.store.movieResults[indexPath.row]
         
         movieCell.configureMovieCell(movieSelected)
@@ -185,7 +194,6 @@ class MoviesSearchHomeViewController: UIViewController, UICollectionViewDelegate
                     self.moviesCollectionView.reloadData()
                 })
             })
-            print("load more \(indexPath.item) equals \(self.store.movieResults.count-2)")
             
         }
     }

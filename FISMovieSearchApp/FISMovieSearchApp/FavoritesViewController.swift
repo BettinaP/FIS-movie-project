@@ -16,10 +16,13 @@ class FavoritesViewController: UIViewController, UITableViewDelegate, UITableVie
     var favoritesTableView = UITableView()
     var savedFavorites = [FavoriteMovie]()
     var store = MovieDataStore.sharedInstance
+//    var deleteAllButton: UIBarButtonItem!
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
+//        deleteAllButton = UIBarButtonItem(title: "Delete All", style: .Plain, target: self, action: "deleteAll()")
+//        navigationItem.rightBarButtonItem = deleteAllButton
         
         favoritesTableView = UITableView(frame: UIScreen.mainScreen().bounds, style: .Plain)
         favoritesTableView.delegate = self
@@ -27,6 +30,7 @@ class FavoritesViewController: UIViewController, UITableViewDelegate, UITableVie
         favoritesTableView.registerClass(FavoriteMovieTableViewCell.self, forCellReuseIdentifier: NSStringFromClass(FavoriteMovieTableViewCell))
         self.view.addSubview(self.favoritesTableView)
         
+        self.navigationItem.title =  "FAVORITES"
         store.fetchData() 
         
         savedFavorites = store.favoriteMovies
@@ -52,19 +56,24 @@ class FavoritesViewController: UIViewController, UITableViewDelegate, UITableVie
     
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print("before deleting:\(savedFavorites.count)")
+
         return self.savedFavorites.count
         
     }
     
     
-    
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        
+        return 100
+    }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         let  favoriteMovieCell = tableView.dequeueReusableCellWithIdentifier(NSStringFromClass(FavoriteMovieTableViewCell), forIndexPath: indexPath) as! FavoriteMovieTableViewCell
         
         let favoriteMovieSelected = self.savedFavorites[indexPath.row]
+        
+        favoriteMovieCell.backgroundColor = UIColor.getRandomColor()
         
         favoriteMovieCell.configureFavoriteMovieCell(favoriteMovieSelected)
         
@@ -78,7 +87,7 @@ class FavoritesViewController: UIViewController, UITableViewDelegate, UITableVie
     
     
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        print("before deleting:\(savedFavorites.count)")
+        
         if editingStyle == UITableViewCellEditingStyle.Delete {
             let savedFavorite = savedFavorites[indexPath.row]
             store.managedObjectContext.deleteObject(savedFavorite)
@@ -88,7 +97,6 @@ class FavoritesViewController: UIViewController, UITableViewDelegate, UITableVie
             store.fetchData()
             store.saveContext()
             favoritesTableView.reloadData()
-            print("after deleting:\(savedFavorites.count)")
         }
     }
     
@@ -224,6 +232,18 @@ class FavoritesViewController: UIViewController, UITableViewDelegate, UITableVie
     
 }
 
+
+extension UIColor{
+    class func getRandomColor() -> UIColor{
+        let red = CGFloat(drand48())
+        let green = CGFloat(drand48())
+        let blue = CGFloat(drand48())
+        
+        
+        
+        return UIColor(red: red, green: green, blue: blue, alpha: 1.0)
+    }
+}
 
 
 

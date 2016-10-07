@@ -92,7 +92,7 @@ class CustomMovieSearchCell: UICollectionViewCell {
             
             let posterURL = NSURL(string: movie.moviePosterURL)
             guard let unwrappedPosterURL = posterURL else {print("Could not get image URL"); return}
-            print(unwrappedPosterURL)
+         
             guard let posterData = NSData(contentsOfURL: unwrappedPosterURL) else { assertionFailure("Could not get image data"); return }
             NSOperationQueue.mainQueue().addOperationWithBlock({
                 
