@@ -64,7 +64,7 @@ class FavoritesViewController: UIViewController, UITableViewDelegate, UITableVie
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         
-        return 100
+        return 150
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -233,17 +233,17 @@ class FavoritesViewController: UIViewController, UITableViewDelegate, UITableVie
 }
 
 
-extension UIColor{
-    class func getRandomColor() -> UIColor{
-        let red = CGFloat(drand48())
-        let green = CGFloat(drand48())
-        let blue = CGFloat(drand48())
-        
-        
-        
-        return UIColor(red: red, green: green, blue: blue, alpha: 1.0)
-    }
-}
+//extension UIColor{
+//    class func getRandomColor() -> UIColor{
+//        let red = CGFloat(drand48())
+//        let green = CGFloat(drand48())
+//        let blue = CGFloat(drand48())
+//        
+//        
+//        
+//        return UIColor(red: red, green: green, blue: blue, alpha: 1.0)
+//    }
+//}
 
 
 

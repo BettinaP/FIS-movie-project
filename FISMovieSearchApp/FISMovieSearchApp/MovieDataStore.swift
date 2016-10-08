@@ -113,10 +113,10 @@ class MovieDataStore {
             favoriteMovies = []
         }
         
-        if favoriteMovies.count == 0 {
-            generateTestData()
-            
-        } 
+//        if favoriteMovies.count == 0 {
+//            generateTestData()
+//            
+//        } 
     }
     
     
