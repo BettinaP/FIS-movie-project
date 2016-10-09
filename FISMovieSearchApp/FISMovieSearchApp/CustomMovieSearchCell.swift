@@ -21,7 +21,7 @@ class CustomMovieSearchCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.backgroundColor = UIColor(white: 0.4, alpha: 0.2)
+        self.backgroundColor = UIColor(white: 0.3, alpha: 0.1)
         setupViews()
     }
     
@@ -38,17 +38,16 @@ class CustomMovieSearchCell: UICollectionViewCell {
         posterView.clipsToBounds = true
         
         titleLabel.textAlignment = NSTextAlignment.Center
+        
         titleLabel.numberOfLines = 2
-        titleLabel.lineBreakMode = NSLineBreakMode.ByTruncatingTail
         titleLabel.textColor = UIColor.blackColor()
-        titleLabel.font = UIFont(name: "Arial", size: 15.0)
+        titleLabel.font = UIFont(name: "HelveticaNeue-Bold", size: 15.0)
         titleLabel.adjustsFontSizeToFitWidth = false
         titleLabel.sizeToFit()
-        titleLabel.backgroundColor = UIColor.lightGrayColor()
         
         yearLabel.textAlignment = NSTextAlignment.Center
         yearLabel.textColor = UIColor.blackColor()
-        yearLabel.font = UIFont(name: "Arial", size: 12.0)
+        yearLabel.font = UIFont(name: "HelveticaNeue", size: 12.0)
         yearLabel.adjustsFontSizeToFitWidth = true
         yearLabel.sizeToFit()
         
@@ -58,7 +57,7 @@ class CustomMovieSearchCell: UICollectionViewCell {
         
         posterView.translatesAutoresizingMaskIntoConstraints = false
         posterView.widthAnchor.constraintEqualToAnchor(self.widthAnchor).active = true
-        posterView.heightAnchor.constraintEqualToAnchor(self.heightAnchor, multiplier: 0.75).active = true
+        posterView.heightAnchor.constraintEqualToAnchor(self.heightAnchor, multiplier: 0.80).active = true
         posterView.topAnchor.constraintEqualToAnchor(self.topAnchor).active = true
         posterView.leadingAnchor.constraintEqualToAnchor(self.leadingAnchor).active = true
         

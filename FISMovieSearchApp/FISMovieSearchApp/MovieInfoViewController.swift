@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import CoreImage
 
 class MovieInfoViewController: UIViewController {
     
@@ -30,6 +31,8 @@ class MovieInfoViewController: UIViewController {
     let detailsStackView = UIStackView()
     let backviewForStack = UIView()
     let favoriteButton = UIButton()
+    var blurEffect = UIBlurEffect()
+    var blurEffectView = UIVisualEffectView()
 //  let favoriteButton = UIBarButtonItem()
     
 // add to nav bar: google "add title to be listed in nav bar", back button and favorites star icon
@@ -84,10 +87,22 @@ class MovieInfoViewController: UIViewController {
         self.backviewForStack.backgroundColor = UIColor.redColor()
       
         
+        
         detailPosterView.contentMode = .Top
         detailPosterView.clipsToBounds = true
-        detailPosterView.backgroundColor = UIColor.purpleColor()
+        //        detailPosterView.backgroundColor = UIColor.purpleColor()
         detailPosterView.contentMode = .ScaleAspectFit
+        
+//        detailPosterView.bringSubviewToFront(detailPosterView)
+//        blurEffect = UIBlurEffect(style: UIBlurEffectStyle.Light)
+//        blurEffectView = UIVisualEffectView(effect: blurEffect)
+//        blurEffectView.frame = detailPosterView.bounds
+//        blurEffectView.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
+//         
+//        detailPosterView.addSubview(blurEffectView)
+//        detailPosterView.sendSubviewToBack(blurEffectView)
+ 
+        
         
         shortPlotTextView.textAlignment = .Left
         shortPlotTextView.sizeToFit()
