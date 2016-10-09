@@ -38,11 +38,11 @@ class CustomMovieSearchCell: UICollectionViewCell {
         posterView.clipsToBounds = true
         
         titleLabel.textAlignment = NSTextAlignment.Center
-        titleLabel.lineBreakMode = NSLineBreakMode.ByWordWrapping
-        titleLabel.numberOfLines = 0
+        titleLabel.numberOfLines = 2
+        titleLabel.lineBreakMode = NSLineBreakMode.ByTruncatingTail
         titleLabel.textColor = UIColor.blackColor()
         titleLabel.font = UIFont(name: "Arial", size: 15.0)
-        titleLabel.adjustsFontSizeToFitWidth = true
+        titleLabel.adjustsFontSizeToFitWidth = false
         titleLabel.sizeToFit()
         titleLabel.backgroundColor = UIColor.lightGrayColor()
         

@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-let reuseIdentifier2 = "favoritesCell"
+ 
 
 class FavoritesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
@@ -73,7 +73,7 @@ class FavoritesViewController: UIViewController, UITableViewDelegate, UITableVie
         
         let favoriteMovieSelected = self.savedFavorites[indexPath.row]
         
-        favoriteMovieCell.backgroundColor = UIColor.getRandomColor()
+//        favoriteMovieCell.backgroundColor = UIColor.getRandomColor()
         
         favoriteMovieCell.configureFavoriteMovieCell(favoriteMovieSelected)
         
@@ -103,11 +103,17 @@ class FavoritesViewController: UIViewController, UITableViewDelegate, UITableVie
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         
-        performSegueWithIdentifier("favoritesToMovieInfo", sender: tableView.cellForRowAtIndexPath(indexPath))
+        performSegueWithIdentifier("favoritesToMovieInfo", sender: favoritesTableView.cellForRowAtIndexPath(indexPath))
+        favoritesTableView.cellForRowAtIndexPath(indexPath)?.highlighted = true
     }
     
     
+    func setHighlighted(_highlighted: Bool, animated: Bool) {
+        
+        
+        
     
+    }
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         let destVC: MovieInfoViewController = segue.destinationViewController as! MovieInfoViewController
         

@@ -110,10 +110,10 @@ class MovieInfoViewController: UIViewController {
         directorLabel.sizeToFit()
         directorLabel.font = UIFont(name: "HelveticaNeue", size: 14.0)
         
-        writerLabel.lineBreakMode = NSLineBreakMode.ByWordWrapping
-        writerLabel.numberOfLines = 0
-        writerLabel.adjustsFontSizeToFitWidth = true
-        writerLabel.sizeToFit()
+        writerLabel.lineBreakMode = NSLineBreakMode.ByTruncatingTail
+        writerLabel.numberOfLines = 1
+//        writerLabel.adjustsFontSizeToFitWidth = true
+//        writerLabel.sizeToFit()
         writerLabel.font = UIFont(name: "HelveticaNeue", size: 14.0)
         
         starsLabel.lineBreakMode = NSLineBreakMode.ByWordWrapping
@@ -144,7 +144,7 @@ class MovieInfoViewController: UIViewController {
         ratedLabel.textAlignment = .Center
         ratedLabel.intrinsicContentSize().width
         ratedLabel.layer.borderColor = UIColor.blackColor().CGColor
-        ratedLabel.layer.borderWidth = 1
+        ratedLabel.layer.borderWidth = 1.5
         
         
         fullPlotLinkButton.setTitleColor(UIColor.blackColor(), forState: .Normal)
@@ -269,6 +269,7 @@ class MovieInfoViewController: UIViewController {
         
         detailsStackView.translatesAutoresizingMaskIntoConstraints = false
         detailsStackView.centerXAnchor.constraintEqualToAnchor(self.view.centerXAnchor).active = true
+        //        detailsStackView.centerYAnchor.constraintEqualToAnchor(self.view.centerYAnchor).active = true
         
         detailsStackView.widthAnchor.constraintEqualToAnchor(self.backviewForStack.widthAnchor).active = true
         //        detailsStackView.leadingAnchor.constraintEqualToAnchor(self.backviewForStack.leadingAnchor).active = true

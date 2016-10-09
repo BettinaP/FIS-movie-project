@@ -11,9 +11,7 @@ import UIKit
 class FavoriteMovieTableViewCell: UITableViewCell {
 
     let titleAndYearLabel = UILabel()
-//    let yearLabel = UILabel()
     let directorLabel = UILabel()
-    let writerLabel = UILabel()
     let actorsLabel = UILabel()
     let imdbScoreLabel = UILabel()
     let metaScoreLabel = UILabel()
@@ -52,65 +50,36 @@ class FavoriteMovieTableViewCell: UITableViewCell {
     func setupFavoriteCellViews() {
         posterView.contentMode = .ScaleAspectFill
         posterView.clipsToBounds = true
-        posterView.backgroundColor = UIColor.getRandomColor()
         
-        
-        titleAndYearLabel.backgroundColor = UIColor.orangeColor()
-        
-        
-        
+        self.backgroundColor =  UIColor(white: 0.2, alpha: 0.2)
+        self.layer.borderColor = UIColor.whiteColor().CGColor
+        self.layer.borderWidth = 1.6
+       
+    
         titleAndYearLabel.textAlignment = NSTextAlignment.Natural
-        titleAndYearLabel.lineBreakMode = NSLineBreakMode.ByWordWrapping
         titleAndYearLabel.numberOfLines = 0
+        titleAndYearLabel.lineBreakMode = NSLineBreakMode.ByWordWrapping
         titleAndYearLabel.textColor = UIColor.blackColor()
         titleAndYearLabel.font = UIFont(name: "HelveticaNeue-Bold", size: 18.0)
         titleAndYearLabel.adjustsFontSizeToFitWidth = true
         titleAndYearLabel.sizeToFit()
-        titleAndYearLabel.backgroundColor = UIColor.lightGrayColor()
         titleAndYearLabel.lineBreakMode = NSLineBreakMode.ByWordWrapping
-       
-        titleAndYearLabel.backgroundColor = UIColor.grayColor()
-        directorLabel.backgroundColor = UIColor.magentaColor()
-        writerLabel.backgroundColor = UIColor.purpleColor()
-        actorsLabel.backgroundColor = UIColor.redColor()
-        imdbScoreLabel.backgroundColor = UIColor.blueColor()
-        metaScoreLabel.backgroundColor = UIColor.whiteColor()
-        
-//        yearLabel.textAlignment = NSTextAlignment.Center
-//        yearLabel.textColor = UIColor.blackColor()
-//        yearLabel.font = UIFont(name: "HelveticaNeue", size: 12.0)
-//        yearLabel.adjustsFontSizeToFitWidth = true
-//        yearLabel.sizeToFit()
-//        yearLabel.textAlignment = .Natural
-//        yearLabel.lineBreakMode = NSLineBreakMode.ByWordWrapping
-//        yearLabel.numberOfLines = 0
-        
         
         directedByLabel.adjustsFontSizeToFitWidth = true
         directedByLabel.sizeToFit()
         directedByLabel.font = UIFont(name: "HelveticaNeue-Bold", size: 15.0)
         
-        directorLabel.lineBreakMode = NSLineBreakMode.ByWordWrapping
         directorLabel.numberOfLines = 0
-        directorLabel.adjustsFontSizeToFitWidth = true
+        directorLabel.lineBreakMode = NSLineBreakMode.ByWordWrapping
         directorLabel.sizeToFit()
         directorLabel.font = UIFont(name: "HelveticaNeue", size: 15.0)
-    
-        writerLabel.lineBreakMode = NSLineBreakMode.ByWordWrapping
-        writerLabel.numberOfLines = 0
-        writerLabel.adjustsFontSizeToFitWidth = true
-        writerLabel.sizeToFit()
-        writerLabel.font = UIFont(name: "HelveticaNeue", size: 15.0)
         
-//        starringLabel.lineBreakMode = NSLineBreakMode.ByWordWrapping
-//        starringLabel.numberOfLines = 0
-//        starringLabel.adjustsFontSizeToFitWidth = true
-//        starringLabel.sizeToFit()
+        starringLabel.numberOfLines = 1
+        starringLabel.adjustsFontSizeToFitWidth = false
         starringLabel.font = UIFont(name: "HelveticaNeue-Bold", size: 15.0)
         
-        actorsLabel.lineBreakMode = NSLineBreakMode.ByWordWrapping
-        actorsLabel.numberOfLines = 0
-        actorsLabel.adjustsFontSizeToFitWidth = true
+        actorsLabel.numberOfLines = 2
+        actorsLabel.lineBreakMode = NSLineBreakMode.ByTruncatingTail
         actorsLabel.sizeToFit()
         actorsLabel.font = UIFont(name: "HelveticaNeue", size: 15.0)
         
@@ -122,7 +91,6 @@ class FavoriteMovieTableViewCell: UITableViewCell {
         
         metaScoreLabel.lineBreakMode = NSLineBreakMode.ByWordWrapping
         metaScoreLabel.numberOfLines = 0
-        metaScoreLabel.adjustsFontSizeToFitWidth = true
         metaScoreLabel.sizeToFit()
         metaScoreLabel.font = UIFont(name: "HelveticaNeue", size: 15.0)
         metaScoreLabel.layer.borderColor = UIColor.blackColor().CGColor
@@ -130,19 +98,14 @@ class FavoriteMovieTableViewCell: UITableViewCell {
         
         genreLabel.lineBreakMode = NSLineBreakMode.ByWordWrapping
         genreLabel.numberOfLines = 0
-        genreLabel.adjustsFontSizeToFitWidth = true
         genreLabel.sizeToFit()
         genreLabel.font = UIFont(name: "HelveticaNeue", size: 15.0)
         
-        
         runtimeLabel.lineBreakMode = NSLineBreakMode.ByWordWrapping
         runtimeLabel.numberOfLines = 0
-        runtimeLabel.adjustsFontSizeToFitWidth = true
         runtimeLabel.sizeToFit()
         runtimeLabel.font = UIFont(name: "HelveticaNeue", size: 15.0)
         
-        
-        ratedLabel.adjustsFontSizeToFitWidth = true
         ratedLabel.sizeToFit()
         ratedLabel.font = UIFont(name:"HelveticaNeue-Bold", size: 15.0)
         ratedLabel.layer.borderColor = UIColor.blackColor().CGColor
@@ -150,11 +113,9 @@ class FavoriteMovieTableViewCell: UITableViewCell {
         
         self.addSubview(posterView)
         self.addSubview(titleAndYearLabel)
-//        self.addSubview(yearLabel)
         self.addSubview(starringLabel)
         self.addSubview(directedByLabel)
         self.addSubview(directorLabel)
-        self.addSubview(writerLabel)
         self.addSubview(actorsLabel)
         self.addSubview(imdbScoreLabel)
         self.addSubview(metaScoreLabel)
@@ -171,22 +132,15 @@ class FavoriteMovieTableViewCell: UITableViewCell {
         titleAndYearLabel.translatesAutoresizingMaskIntoConstraints = false
         titleAndYearLabel.leadingAnchor.constraintEqualToAnchor(posterView.trailingAnchor).active = true
         titleAndYearLabel.widthAnchor.constraintEqualToAnchor(self.widthAnchor, multiplier: 0.8).active = true
-        titleAndYearLabel.topAnchor.constraintEqualToAnchor(self.topAnchor).active = true //, constant: frame.height * 0.1
-        
-//        yearLabel.translatesAutoresizingMaskIntoConstraints = false
-//        yearLabel.topAnchor.constraintEqualToAnchor(titleLabel.bottomAnchor).active = true
-//        yearLabel.widthAnchor.constraintEqualToAnchor(self.widthAnchor).active = true
-        
+        titleAndYearLabel.topAnchor.constraintEqualToAnchor(self.topAnchor).active = true
         
         ratedLabel.translatesAutoresizingMaskIntoConstraints = false
         ratedLabel.leftAnchor.constraintEqualToAnchor(posterView.rightAnchor).active = true
         ratedLabel.topAnchor.constraintEqualToAnchor(self.titleAndYearLabel.bottomAnchor, constant: self.frame.height * 0.1).active = true
         
-        
         runtimeLabel.translatesAutoresizingMaskIntoConstraints = false
         runtimeLabel.leadingAnchor.constraintEqualToAnchor(ratedLabel.trailingAnchor).active = true
         runtimeLabel.topAnchor.constraintEqualToAnchor(self.titleAndYearLabel.bottomAnchor, constant: self.frame.height * 0.1).active = true
-        
         
         genreLabel.translatesAutoresizingMaskIntoConstraints = false
         genreLabel.leftAnchor.constraintEqualToAnchor(posterView.rightAnchor).active = true
@@ -196,40 +150,33 @@ class FavoriteMovieTableViewCell: UITableViewCell {
         imdbScoreLabel.leadingAnchor.constraintEqualToAnchor(posterView.trailingAnchor).active = true
         imdbScoreLabel.topAnchor.constraintEqualToAnchor(self.genreLabel.bottomAnchor, constant: self.frame.height * 0.1).active = true
         
-        
         metaScoreLabel.translatesAutoresizingMaskIntoConstraints = false
         metaScoreLabel.leftAnchor.constraintEqualToAnchor(imdbScoreLabel.rightAnchor).active = true
         metaScoreLabel.topAnchor.constraintEqualToAnchor(self.genreLabel.bottomAnchor, constant: self.frame.height * 0.1).active = true
         
-        
         starringLabel.translatesAutoresizingMaskIntoConstraints = false
         starringLabel.leadingAnchor.constraintEqualToAnchor(posterView.trailingAnchor).active = true
-        //        actorsLabel.widthAnchor.constraintEqualToAnchor(self.widthAnchor).active = true
-//        starringLabel.trailingAnchor.constraintEqualToAnchor(actorsLabel.leadingAnchor).active = true
-        starringLabel.topAnchor.constraintEqualToAnchor(self.imdbScoreLabel.bottomAnchor, constant: self.frame.height * 0.1).active = true
+        starringLabel.widthAnchor.constraintEqualToAnchor(self.widthAnchor, multiplier: 0.15).active = true
+        starringLabel.trailingAnchor.constraintEqualToAnchor(actorsLabel.leadingAnchor).active = true
+        starringLabel.topAnchor.constraintEqualToAnchor(self.imdbScoreLabel.bottomAnchor, constant: self.frame.height * 0.088).active = true
         
         actorsLabel.translatesAutoresizingMaskIntoConstraints = false 
-        actorsLabel.leftAnchor.constraintEqualToAnchor(starringLabel.rightAnchor).active = true
-//        actorsLabel.widthAnchor.constraintEqualToAnchor(self.widthAnchor).active = true
+        actorsLabel.leadingAnchor.constraintEqualToAnchor(starringLabel.trailingAnchor).active = true
         actorsLabel.trailingAnchor.constraintEqualToAnchor(self.trailingAnchor).active = true
-        actorsLabel.topAnchor.constraintEqualToAnchor(self.imdbScoreLabel.bottomAnchor, constant: self.frame.height * 0.1).active = true
+        actorsLabel.topAnchor.constraintEqualToAnchor(self.imdbScoreLabel.bottomAnchor, constant: self.frame.height * 0.088).active = true
         
         directedByLabel.translatesAutoresizingMaskIntoConstraints = false
         directedByLabel.leadingAnchor.constraintEqualToAnchor(posterView.trailingAnchor).active = true
         directedByLabel.trailingAnchor.constraintEqualToAnchor(directorLabel.leadingAnchor).active = true
-        //        directorLabel.widthAnchor.constraintEqualToAnchor(self.widthAnchor).active = true
-        directedByLabel.topAnchor.constraintEqualToAnchor(self.actorsLabel.bottomAnchor, constant:  self.frame.height * 0.1).active = true
+        directedByLabel.topAnchor.constraintEqualToAnchor(self.actorsLabel.bottomAnchor, constant:  self.frame.height * 0.088).active = true
+        directedByLabel.bottomAnchor.constraintEqualToAnchor(self.bottomAnchor, constant: -(self.frame.height * 0.1)).active = true
         
         directorLabel.translatesAutoresizingMaskIntoConstraints = false
         directorLabel.leadingAnchor.constraintEqualToAnchor(directedByLabel.trailingAnchor).active = true
         directorLabel.trailingAnchor.constraintEqualToAnchor(self.trailingAnchor).active = true
-//        directorLabel.widthAnchor.constraintEqualToAnchor(self.widthAnchor).active = true
-        directorLabel.topAnchor.constraintEqualToAnchor(self.actorsLabel.bottomAnchor, constant:  self.frame.height * 0.1).active = true
-//        
-//        writerLabel.translatesAutoresizingMaskIntoConstraints = false
-//        writerLabel.leftAnchor.constraintEqualToAnchor(posterView.rightAnchor).active = true
-//        writerLabel.topAnchor.constraintEqualToAnchor(self.directorLabel.bottomAnchor, constant:  self.frame.height * 0.01).active = true
-//
+        directorLabel.topAnchor.constraintEqualToAnchor(self.actorsLabel.bottomAnchor, constant:  self.frame.height * 0.088).active = true
+        directorLabel.bottomAnchor.constraintEqualToAnchor(self.bottomAnchor, constant: -(self.frame.height * 0.1)).active = true
+     
     }
     
     
